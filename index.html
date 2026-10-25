@@ -1,1 +1,1165 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>國中英語閱讀素養資源庫 - Junior High English Reader</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts: Inter & Noto Sans TC -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+  
+  <style>
+    body {
+      font-family: 'Inter', 'Noto Sans TC', sans-serif;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      height: 6px;
+      width: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #f1f5f9;
+      border-radius: 9999px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 9999px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
 
+    /* Soundwave Animation */
+    @keyframes soundwave {
+      0%, 100% { height: 4px; }
+      50% { height: 18px; }
+    }
+    .wave-bar {
+      width: 3px;
+      background-color: #6366f1;
+      border-radius: 9999px;
+      display: inline-block;
+      animation: soundwave 1.2s ease-in-out infinite;
+    }
+    .wave-bar:nth-child(1) { animation-delay: 0.1s; }
+    .wave-bar:nth-child(2) { animation-delay: 0.3s; }
+    .wave-bar:nth-child(3) { animation-delay: 0.5s; }
+    .wave-bar:nth-child(4) { animation-delay: 0.2s; }
+    .wave-bar:nth-child(5) { animation-delay: 0.4s; }
+
+    /* Reading passage sentence highlight */
+    .reading-highlight {
+      background-color: #fef08a !important;
+      color: #713f12 !important;
+      border-radius: 4px;
+      padding: 1px 3px;
+      transition: background-color 0.2s ease;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col">
+
+  <!-- Header -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-xs">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <!-- Logo & Title -->
+        <div class="flex items-center space-x-3">
+          <div class="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center text-white shadow-md shadow-indigo-100">
+            <i class="fa-solid fa-book-open-reader text-lg"></i>
+          </div>
+          <div>
+            <h1 class="text-lg font-bold text-slate-900 tracking-tight">國中英語閱讀素養題庫</h1>
+            <p class="text-xs text-slate-500 font-medium">JHS English Leveled Reading Hub</p>
+          </div>
+        </div>
+
+        <!-- Quick Stats / Actions -->
+        <div class="flex items-center space-x-2">
+          <button id="add-article-modal-btn" class="inline-flex items-center px-3.5 py-2 text-xs sm:text-sm font-semibold rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 transition shadow-sm">
+            <i class="fa-solid fa-plus mr-1.5"></i> 新增篇章
+          </button>
+        </div>
+      </div>
+
+      <!-- Level 1 Tabs: Semester Tabs (七上 ~ 九下) -->
+      <nav class="flex space-x-2 overflow-x-auto custom-scrollbar pb-2.5 pt-1" id="semester-tabs-container">
+        <!-- Dynamic rendering via JS -->
+      </nav>
+    </div>
+  </header>
+
+  <!-- Level 2 Navigation: Subcategory Bar -->
+  <section class="bg-slate-100/90 border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+      <div class="flex items-center justify-between flex-wrap gap-2">
+        <div class="flex items-center space-x-2 text-xs font-semibold uppercase tracking-wider text-slate-500 mr-2">
+          <i class="fa-solid fa-layer-group"></i>
+          <span>分類主題：</span>
+        </div>
+        <div class="flex items-center space-x-2 overflow-x-auto custom-scrollbar flex-1 py-1" id="category-tabs-container">
+          <!-- Dynamic rendering via JS -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content Area -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <!-- Active Info Banner -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-6 pb-4 border-b border-slate-200 gap-3">
+      <div>
+        <div class="flex items-center gap-2">
+          <span id="current-badge" class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-indigo-100 text-indigo-700">七上</span>
+          <h2 id="current-category-title" class="text-xl font-bold text-slate-900">家庭、家居與職業 (Family & Home)</h2>
+        </div>
+        <p id="current-category-desc" class="text-sm text-slate-500 mt-1">包含家庭成員稱謂、空間位置及日常職業等基礎閱讀篇章。</p>
+      </div>
+
+      <!-- Quick Filter & Article Counter -->
+      <div class="flex items-center gap-3">
+        <div class="relative">
+          <input type="text" id="search-input" placeholder="搜尋篇章或關鍵字..." class="pl-8 pr-4 py-1.5 bg-white border border-slate-300 rounded-lg text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent w-48 sm:w-64">
+          <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-2.5 text-xs text-slate-400"></i>
+        </div>
+        <span id="article-count-badge" class="text-xs bg-slate-200 text-slate-700 font-medium px-2.5 py-1.5 rounded-lg whitespace-nowrap">共 0 篇</span>
+      </div>
+    </div>
+
+    <!-- Article Cards Container -->
+    <div id="articles-container" class="grid grid-cols-1 gap-6">
+      <!-- Dynamically inserted article cards -->
+    </div>
+
+    <!-- Empty State View -->
+    <div id="empty-state" class="hidden text-center py-16 px-4 bg-white rounded-2xl border border-dashed border-slate-300 my-4">
+      <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-slate-100 flex items-center justify-center text-slate-400 text-2xl">
+        <i class="fa-solid fa-folder-open"></i>
+      </div>
+      <h3 class="text-base font-bold text-slate-700">目前尚無篇章內容</h3>
+      <p class="text-sm text-slate-500 mt-1 max-w-sm mx-auto">此學期或分類單元正在規劃建置中，敬請期待！您也可以點擊右上角「新增篇章」直接加入內容。</p>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t border-slate-200 mt-auto py-6">
+    <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-500">
+      <p>國中英語分級閱讀導航系統 &copy; 2026. 支援七至九年級課綱閱讀素養教材整合與自訂擴充。</p>
+    </div>
+  </footer>
+
+  <!-- Modal: Add New Article -->
+  <div id="add-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 z-50 hidden">
+    <div class="bg-white rounded-2xl shadow-xl max-w-2xl w-full max-h-[90vh] flex flex-col overflow-hidden">
+      <div class="px-6 py-4 border-b border-slate-200 flex items-center justify-between">
+        <h3 class="font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-file-circle-plus text-indigo-600"></i> 新增閱讀篇章
+        </h3>
+        <button id="close-modal-btn" class="text-slate-400 hover:text-slate-600 transition">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <form id="add-article-form" class="p-6 overflow-y-auto space-y-4 flex-1 custom-scrollbar">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">學期分級</label>
+            <select id="modal-semester" class="w-full border border-slate-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+              <option value="7A">七年級上學期 (七上)</option>
+              <option value="7B">七年級下學期 (七下)</option>
+              <option value="8A">八年級上學期 (八上)</option>
+              <option value="8B">八年級下學期 (八下)</option>
+              <option value="9A">九年級上學期 (九上)</option>
+              <option value="9B">九年級下學期 (九下)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">子類別</label>
+            <select id="modal-category" class="w-full border border-slate-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+              <option value="cat1">類別一：家庭、家居與職業</option>
+              <option value="cat2">類別二：週末活動與場館守則</option>
+              <option value="cat3">類別三：動物生態與日期節慶</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div class="sm:col-span-2">
+            <label class="block text-xs font-semibold text-slate-700 mb-1">篇章標題</label>
+            <input type="text" id="modal-title" required placeholder="例: Sam's New House" class="w-full border border-slate-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">參考頁碼 / 字數</label>
+            <div class="flex gap-2">
+              <input type="text" id="modal-page" placeholder="Page 1" class="w-1/2 border border-slate-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+              <input type="number" id="modal-words" placeholder="178" class="w-1/2 border border-slate-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1">超範單字 (逗號隔開)</label>
+          <input type="text" id="modal-vocab" placeholder="例: love (v.; n.愛), thing (n.東西)" class="w-full border border-slate-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1">自訂錄音音檔網址 (選填 MP3 / AAC)</label>
+          <div class="relative">
+            <input type="url" id="modal-audio-url" placeholder="https://example.com/audio.mp3 (留空則預設採用智慧語音朗讀)" class="w-full border border-slate-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none pl-8">
+            <i class="fa-solid fa-headphones absolute left-2.5 top-2.5 text-xs text-slate-400"></i>
+          </div>
+          <p class="text-[11px] text-slate-400 mt-1">若未填寫，系統將自動啟動內建美式真人發音 (Web Speech TTS) 進行智慧朗讀。</p>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1">文章內文 (English Passage)</label>
+          <textarea id="modal-content" rows="6" required placeholder="請輸入閱讀文章英文內文..." class="w-full border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none font-sans"></textarea>
+        </div>
+
+        <div class="border-t border-slate-200 pt-3">
+          <p class="text-xs text-slate-500 italic mb-2">測驗題目將自動建立預設格式，可於日後直接在資料庫物件中細部調整。</p>
+        </div>
+
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" id="cancel-modal-btn" class="px-4 py-2 text-sm font-medium text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-lg">取消</button>
+          <button type="submit" class="px-4 py-2 text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg shadow-sm">儲存篇章</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Application Logic -->
+  <script>
+    const curriculumData = {
+      semesters: [
+        { id: "7A", title: "七上", label: "七年級上學期", active: true },
+        { id: "7B", title: "七下", label: "七年級下學期", active: false },
+        { id: "8A", title: "八上", label: "八年級上學期", active: false },
+        { id: "8B", title: "八下", label: "八年級下學期", active: false },
+        { id: "9A", title: "九上", label: "九年級上學期", active: false },
+        { id: "9B", title: "九下", label: "九年級下學期", active: false }
+      ],
+      categories: {
+        "7A": [
+          { id: "cat1", title: "類別一：家庭、家居與職業", icon: "fa-house-user", desc: "包含家庭成員稱謂、居住空間位置（客廳、廚房）及職業介紹。" },
+          { id: "cat2", title: "類別二：週末活動與場館守則", icon: "fa-landmark", desc: "涵蓋週末博物館參觀、K-pop 見面會、祈使句及公共禮儀規範。" },
+          { id: "cat3", title: "類別三：動物生態與日期節慶", icon: "fa-paw", desc: "包含世界動物日、森林動物保護、生態志工與月份日期表達。" }
+        ],
+        "7B": [
+          { id: "cat7B_1", title: "類別一：日常生活與作息", icon: "fa-clock", desc: "日常作息、頻率副詞與學校社團生活。" }
+        ],
+        "8A": [],
+        "8B": [],
+        "9A": [],
+        "9B": []
+      },
+      articles: [
+        {
+          id: "art-1",
+          semesterId: "7A",
+          categoryId: "cat1",
+          page: "Page 1-2",
+          title: "Sam's New House and Lovely Family",
+          wordCount: 178,
+          extraVocab: ["love (v.; n.愛)", "thing (n.東西;事情)"],
+          passage: `I am a junior high school student. My name is Sam. Welcome to my new house. This is my living room. The walls are purple. Purple is my favorite color. Look at those sofas. They are gray and brown. They are very old, but they are really nice. Who is on the sofa? It is my young cousin, Lily. She is one year old. She is a beautiful baby. Her mother is my aunt. My aunt is a housewife. Her husband is my uncle. He is an office worker. Where are my parents? They are in the kitchen. They are hungry. They eat a brown cookie. Look at these things on the table. They are my notebook, my marker, and my brush. Those are gifts from my new classmate, Tom. He is a handsome boy. His mother is a police officer. His father is a writer. Where is my pencil case? It is not here. Oh, I see it. It is in the dining room. My house is very beautiful. I love my dear family and my house.`,
+          questions: [
+            { q: "What is the story mainly about?", options: ["(A) A boy and his school.", "(B) A boy and his house.", "(C) A boy and his pencil case.", "(D) A boy and his uncle."], ans: "(B)" },
+            { q: "Where are Sam's parents?", options: ["(A) In the kitchen.", "(B) On the brown sofa.", "(C) In the living room.", "(D) In the dining room."], ans: "(A)" },
+            { q: "Who gives the notebook, marker, and brush to Sam?", options: ["(A) His cousin Lily.", "(B) His classmate Tom.", "(C) His uncle.", "(D) His aunt."], ans: "(B)" },
+            { q: "What does the word 'beautiful' mean in the story?", options: ["(A) Very old and gray.", "(B) Very hungry for food.", "(C) Very nice to look at.", "(D) Very bad and dirty."], ans: "(C)" },
+            { q: "How does Sam feel about his house?", options: ["(A) He hates his house.", "(B) He is afraid of his house.", "(C) He likes his house.", "(D) He is sad about his house."], ans: "(C)" }
+          ]
+        },
+        {
+          id: "art-2",
+          semesterId: "7A",
+          categoryId: "cat1",
+          page: "Page 3-5",
+          title: "Family Pictures on the Purple Wall",
+          wordCount: 173,
+          extraVocab: ["now (adv.現在)"],
+          passage: `I am a junior high school student. These are pictures on the purple wall in my living room. Who are those people? They are my dear family. Who is that young woman? She is my aunt. She is a police officer. She is very beautiful. Where is her husband? He is my uncle. He is a writer. He is in the dining room. His notebook and pencil case are brown. His marker and brush are gray. His favorite color is gray. Those are my parents. My mother is an office worker. My father is a singer. Who is that handsome boy? He is my cousin. He is a new elementary school student. He is eight years old. Where is he now? He is on the sofa. He is hungry. Maybe he wants a cookie. Where is the baby? She is the daughter of my uncle. She is in the kitchen with my grandmother. My grandmother is a housewife. I see a gift for my new classmate, too. It is really a nice family.`,
+          questions: [
+            { q: "What is the main idea of the reading?", options: ["(A) The writer is making cookies in the kitchen.", "(B) The writer is looking for a gift for his new classmate.", "(C) The writer is painting the wall of his living room.", "(D) The writer is introducing his family members and their jobs."], ans: "(D)" },
+            { q: "Where is the writer's uncle?", options: ["(A) In the living room.", "(B) In the dining room.", "(C) In the kitchen.", "(D) On the sofa."], ans: "(B)" },
+            { q: "Why is the cousin on the sofa?", options: ["(A) He is hungry and wants some food.", "(B) He wants to write in a notebook.", "(C) He wants to play with the baby.", "(D) He is waiting for his new classmate."], ans: "(A)" },
+            { q: "What does the word 'handsome' mean in the reading?", options: ["(A) Very angry.", "(B) Good-looking.", "(C) Too old.", "(D) Really hungry."], ans: "(B)" },
+            { q: "How does the writer introduce his family members?", options: ["(A) By writing a letter to his new classmate.", "(B) By talking about their favorite food in the kitchen.", "(C) By asking questions and giving answers about the pictures.", "(D) By drawing a big family tree on the purple wall."], ans: "(C)" }
+          ]
+        },
+        {
+          id: "art-3",
+          semesterId: "7A",
+          categoryId: "cat1",
+          page: "Page 6-7",
+          title: "Lisa's Eco-friendly Gifts",
+          wordCount: 147,
+          extraVocab: ["earth (n.地球)", "great (adj.棒的)", "paint (v.; n.畫圖;顏料)", "toy (n.玩具)"],
+          passage: `Who is that young woman? She is my cousin, Lisa. She is a writer. Where is she? She is in the living room of our house. What are those things on the sofa? Those are gifts for her family. Lisa is very nice. These are old notebooks. They are brown and gray. But they are very beautiful. Who is that handsome man? He is my uncle. He is a police officer. These are gifts for him. They are a new pencil case and a purple marker. Lisa paints old boxes with a brush. Where are the mice? Oh, they are toy mice! They are for the baby. The baby is one year old. He is very hungry for a cookie. Maybe these are cookie boxes? No, they are old boxes. Lisa is a great cousin. Her gifts are good for the earth. We love these nice gifts.`,
+          questions: [
+            { q: "What is the reading mainly about?", options: ["(A) A beautiful house and a baby.", "(B) A police officer and his work.", "(C) A young woman and her gifts.", "(D) A hungry boy and some cookies."], ans: "(C)" },
+            { q: "Where is Lisa?", options: ["(A) In the kitchen.", "(B) In the office.", "(C) In the dining room.", "(D) In the living room."], ans: "(D)" },
+            { q: "Why are Lisa's gifts good for the earth?", options: ["(A) She cleans the living room with a brush.", "(B) She buys new notebooks for her family.", "(C) She uses old boxes for her gifts.", "(D) She feeds the hungry baby with cookies."], ans: "(C)" },
+            { q: "What does 'great' mean in the reading?", options: ["(A) Very old and gray.", "(B) Very hungry and sad.", "(C) Very good and nice.", "(D) Very tall and young."], ans: "(C)" },
+            { q: "How does the writer feel about Lisa's gifts?", options: ["(A) The writer loves them very much.", "(B) The writer is angry about them.", "(C) The writer thinks they are dirty.", "(D) The writer does not want them."], ans: "(A)" }
+          ]
+        },
+        {
+          id: "art-4",
+          semesterId: "7A",
+          categoryId: "cat1",
+          page: "Page 8-9",
+          title: "My Dear Family Members",
+          wordCount: 142,
+          extraVocab: ["無 (全課綱核心字彙)"],
+          passage: `Hello! I am a junior high school student. This is my house. This is the living room. Who are those people on the sofa? They are my dear family. Where is my aunt? She is in the kitchen. She is a young woman. She is a police officer. She is very beautiful. Her husband is my uncle. He is a writer. He is handsome. He is in the dining room. These are their children. My cousin is a new classmate at my school. He is thirteen years old. He is a really nice singer, too. The baby is his sister. Where are my parents? They are office workers. They are not at home. Maybe they are hungry. I have a gift for them. It is a purple pencil case. Purple is their favorite color. It is nice to meet you. See you!`,
+          questions: [
+            { q: "What is the reading about?", options: ["(A) A police officer's new house.", "(B) A student's favorite color.", "(C) A student's family members.", "(D) A nice singer at a school."], ans: "(C)" },
+            { q: "Where is the uncle?", options: ["(A) In the kitchen.", "(B) In the dining room.", "(C) On the sofa.", "(D) At the school."], ans: "(B)" },
+            { q: "Who is thirteen years old?", options: ["(A) The writer.", "(B) The cousin.", "(C) The baby.", "(D) The aunt."], ans: "(B)" },
+            { q: "What does 'them' mean in the reading?", options: ["(A) The uncle and aunt.", "(B) The children.", "(C) The parents.", "(D) The new classmates."], ans: "(C)" },
+            { q: "How does the writer introduce the family members?", options: ["(A) By writing about their favorite food.", "(B) By asking questions about them.", "(C) By singing a song to them.", "(D) By drawing a picture of them."], ans: "(B)" }
+          ]
+        },
+        {
+          id: "art-5",
+          semesterId: "7A",
+          categoryId: "cat1",
+          page: "Page 24-25",
+          title: "A Glimpse into Our Family Life",
+          wordCount: 138,
+          extraVocab: ["love (v.; n.愛)", "man (n.男人)", "member (n.成員)"],
+          passage: `See my new picture. These are my family members in the house. Who is the handsome man? He is my father. He is a police officer. Where is he? He is in the living room. Those are his notebooks and markers. Who is the beautiful woman? She is my mother. She is a writer. She is in the kitchen. Her favorite color is purple. The wall is purple. Who is the young boy? He is my cousin. He is a junior high school student. He is in the dining room. He is really hungry. Those are his brown cookies. Where is the baby? She is my uncle's daughter. She is one year old. She is on the gray sofa. I am a junior high school student, too. My parents are very nice. I love my dear family.`,
+          questions: [
+            { q: "What is the story about?", options: ["(A) A busy police station.", "(B) A family in a house.", "(C) A new junior high school.", "(D) A beautiful gray sofa."], ans: "(B)" },
+            { q: "Where is the writer's mother?", options: ["(A) In the living room.", "(B) On the gray sofa.", "(C) In the dining room.", "(D) In the kitchen."], ans: "(D)" },
+            { q: "What do we know about the young boy from the story?", options: ["(A) He is a police officer.", "(B) He wants to eat.", "(C) He is one year old.", "(D) He is a good writer."], ans: "(B)" },
+            { q: "What does the word 'handsome' mean in the story?", options: ["(A) Too old.", "(B) Very angry.", "(C) Really hungry.", "(D) Nice-looking."], ans: "(D)" },
+            { q: "How does the writer feel about the family?", options: ["(A) The writer loves them very much.", "(B) The writer is afraid of them.", "(C) The writer is angry with them.", "(D) The writer is sad about them."], ans: "(A)" }
+          ]
+        },
+        {
+          id: "art-6",
+          semesterId: "7A",
+          categoryId: "cat2",
+          page: "Page 10-11",
+          title: "Museum Morning & K-Pop Concert",
+          wordCount: 151,
+          extraVocab: ["cellphone (n.手機)", "enjoy (v.享受)", "into (prep.到...裡面)", "meeting (n.會面)"],
+          passage: `Wake up, everyone! What day is it today? It is Saturday. We are going to the museum today. Hurry, please! What time is the museum class? It is at nine a.m. We are meeting many guys from our English class. Let's take a bus together. Now, we are walking into the museum. Read the sign. Please be quiet and follow the rules. Turn off your cellphone. Do not fight or talk. We can study a great dinosaur and a cute mummy here. We can use the magic lab for free. Please be careful with the rocks. Wash your hands after the lab. Then, we are going to a K-pop concert! It is at two p.m. The popular band is ready on the stage. Many fans are waiting. We can enjoy the music and a video. What time is the meet-and-greet? It is at four p.m. It is a great weekend!`,
+          questions: [
+            { q: "What is the story about?", options: ["(A) A weekend trip to a museum and a concert.", "(B) A magic lab at a popular school.", "(C) A music video about a great dinosaur.", "(D) A class rule for washing hands."], ans: "(A)" },
+            { q: "What time is the K-pop concert?", options: ["(A) At nine a.m.", "(B) At ten a.m.", "(C) At two p.m.", "(D) At four p.m."], ans: "(C)" },
+            { q: "Why do the students wash their hands?", options: ["(A) They want to eat some food at the museum.", "(B) They finish their class in the magic lab.", "(C) They are cleaning the stage for the band.", "(D) They are ready to take a bus home."], ans: "(B)" },
+            { q: "What does the sign in the museum say?", options: ["(A) Do not study.", "(B) Do not talk.", "(C) Do not use the lab.", "(D) Do not wash your hands."], ans: "(B)" },
+            { q: "How does the writer feel about the weekend?", options: ["(A) Tired.", "(B) Angry.", "(C) Sad.", "(D) Happy."], ans: "(D)" }
+          ]
+        },
+        {
+          id: "art-7",
+          semesterId: "7A",
+          categoryId: "cat2",
+          page: "Page 12-13",
+          title: "The Magic Rocks Meet-and-Greet",
+          wordCount: 120,
+          extraVocab: ["photo (n.照片)"],
+          passage: `Wake up, guys! Hurry! What day is today? It is Saturday. It is the weekend! What time is it? It is 9 a.m. Let's go to the K-pop meet-and-greet! The Magic Rocks is a very popular band. Many fans are waiting at the place now. Look! The band is walking on the stage. Everyone is taking videos. Oh, please be careful. We can see them, but we cannot fight. Please follow the rules. Be safe. Do not talk. Be quiet. We can wait together. Now, the band is signing for the fans. They are very cute and great. We can take photos with them. After the party, let's wash our hands. We can have a great time today!`,
+          questions: [
+            { q: "What is the reading mainly about?", options: ["(A) A quiet morning in a magic museum.", "(B) A fun weekend at a popular band's meet-and-greet.", "(C) A music class with a great teacher.", "(D) A fight at a K-pop concert."], ans: "(B)" },
+            { q: "What time is the meet-and-greet?", options: ["(A) 8 a.m.", "(B) 10 a.m.", "(C) 9 a.m.", "(D) 11 a.m."], ans: "(C)" },
+            { q: "Why does the writer say 'cannot fight' and 'follow the rules'?", options: ["(A) Because the fans are tired and want to sleep.", "(B) Because the band is playing a game with the fans.", "(C) Because the writer wants everyone to be safe.", "(D) Because the music is too loud for the guys."], ans: "(C)" },
+            { q: "What does 'signing' mean in the reading?", options: ["(A) Washing hands with everyone.", "(B) Singing a popular song on the stage.", "(C) Taking videos of the cute guys.", "(D) Writing names on paper for the fans."], ans: "(D)" },
+            { q: "What do the fans do after the meet-and-greet?", options: ["(A) They walk on the stage.", "(B) They fight for a place.", "(C) They wake up early.", "(D) They wash their hands."], ans: "(D)" }
+          ]
+        },
+        {
+          id: "art-8",
+          semesterId: "7A",
+          categoryId: "cat2",
+          page: "Page 16-17",
+          title: "Student Reporter at the City Museum",
+          wordCount: 128,
+          extraVocab: ["city (n.城市)", "photo (n.照片)", "reporter (n.記者)", "visit (v.拜訪)"],
+          passage: `Wake up, everyone! What day is it today? It is Saturday! What time is it now? It is 10 a.m. I am a student reporter. I am reporting from the city museum. A very popular K-pop band is visiting the museum today. Many fans are waiting together. They are ready for the meet-and-greet. The band is making a new music video with a magic dinosaur rock here. The fans are reading a big sign. The sign says, "Please be careful. Follow the rules. Do not fight." Let's be safe. Please wait. You can take photos, but please turn off your music. Be quiet in the museum. You can meet the guys in the band. Hurry up, but do not run! Let's have a great weekend together!`,
+          questions: [
+            { q: "What is the news report mainly about?", options: ["(A) A K-pop band's event and the rules.", "(B) A student reporter's great weekend.", "(C) A magic dinosaur rock in the museum.", "(D) A fight at the city museum today."], ans: "(A)" },
+            { q: "What time is the student reporting from the museum?", options: ["(A) 8 a.m.", "(B) 10 p.m.", "(C) 10 a.m.", "(D) 8 p.m."], ans: "(C)" },
+            { q: "Why does the sign say 'Do not fight'?", options: ["(A) Because the fans are making a new video.", "(B) Because the band is sleeping in the museum.", "(C) Because the museum wants a safe place.", "(D) Because the reporter is taking many photos."], ans: "(C)" },
+            { q: "What does 'meet-and-greet' mean in the reading?", options: ["(A) A place to buy a magic rock.", "(B) A time to say hello to the band.", "(C) A rule for the city museum.", "(D) A sign with a dinosaur on it."], ans: "(B)" },
+            { q: "How does the student reporter end the news report?", options: ["(A) By asking everyone to wake up.", "(B) By telling the time and the day.", "(C) By reading a big sign to the fans.", "(D) By wishing everyone a great weekend."], ans: "(D)" }
+          ]
+        },
+        {
+          id: "art-9",
+          semesterId: "7A",
+          categoryId: "cat2",
+          page: "Page 18-19",
+          title: "Follow the Rules at the Dinosaur Museum",
+          wordCount: 155,
+          extraVocab: ["about (adv.大約)", "photo (n.照片)"],
+          passage: `What day is today? Today is Saturday. It is the weekend. What time is it? It is 9 a.m. "Wake up, guys!" I say. "Let's go to the magic dinosaur museum together." We are taking a bus now. We are ready for a great time. At the museum, we see a man with a sign. The sign is about the rules. "Please read the sign," the man says. "Follow the rules, and everyone can be safe in this place." What can we do here? We can see many cute dinosaur rocks and a big mummy. We can take photos. But we have rules. "Please be quiet. Do not talk or fight," the sign says. A boy is running. "Be careful," I say. "Do not run. Please wait." Another guy is playing music. "Turn off the video music, please," the man says. After the museum, we wash our hands. We are having a great weekend.`,
+          questions: [
+            { q: "What is the story about?", options: ["(A) The rules at a dinosaur museum.", "(B) A fun party on the weekend.", "(C) A boy playing video music.", "(D) The time of a music concert."], ans: "(A)" },
+            { q: "What can the students see at the museum?", options: ["(A) A pop concert.", "(B) A magic bus.", "(C) A music video.", "(D) A big mummy."], ans: "(D)" },
+            { q: "Why does the man ask the guy to turn off the video music?", options: ["(A) Because the music is great.", "(B) Because they are at a concert.", "(C) Because the sign says to be quiet.", "(D) Because the guy is fighting with a boy."], ans: "(C)" },
+            { q: "In the reading, what does 'follow' mean?", options: ["(A) To take a bus to a place.", "(B) To do what the rules say.", "(C) To wash hands after class.", "(D) To wake up at 9 a.m."], ans: "(B)" },
+            { q: "What does the writer think about the museum rules?", options: ["(A) They are bad for the weekend.", "(B) They make the students want to fight.", "(C) They are only for the magic dinosaur.", "(D) They make the museum a safe place."], ans: "(D)" }
+          ]
+        },
+        {
+          id: "art-10",
+          semesterId: "7A",
+          categoryId: "cat3",
+          page: "Page 14-15",
+          title: "A Lucky Birthday Trip to the Big Forest",
+          wordCount: 158,
+          extraVocab: ["always (adv.總是)", "forest (n.森林)", "trash (n.垃圾)", "travel (v.旅行)"],
+          passage: `Today is my birthday. What date is it? It is November the fourth. My family and I are on a trip. We are in a big forest. When do we travel? We always travel in November. There is a big river in the forest. There are many animals around it. There is a herd of elephants. There are also monkeys, foxes, and bears. This is my first time here. I have an apple in my bag. I want to give the apple to a monkey. But my dad says no. We never give our food to animals. Our food is not healthy for them. The forest is their home. We do not leave trash in the forest. We put it in our bags. It is important to have a clean forest for the animals. On the second day, we walk in the forest. On the third day, we go home. I am very thankful for this lucky trip.`,
+          questions: [
+            { q: "What is the main idea of the reading?", options: ["(A) A student's trip to a forest.", "(B) A party for a monkey.", "(C) A dinner with animals.", "(D) A bad day in a river."], ans: "(A)" },
+            { q: "What animal does the writer want to give an apple to?", options: ["(A) An elephant.", "(B) A monkey.", "(C) A bear.", "(D) A fox."], ans: "(B)" },
+            { q: "Why does the dad say no to the writer?", options: ["(A) The apple is for the dad.", "(B) The writer does not have apples.", "(C) Human food is bad for animals.", "(D) Monkeys do not like apples."], ans: "(C)" },
+            { q: "What does 'trash' mean in the reading?", options: ["(A) A big river in the forest.", "(B) Healthy food for animals.", "(C) Things we do not want.", "(D) A heavy bag for long trips."], ans: "(C)" },
+            { q: "How does the writer feel about the trip?", options: ["(A) Happy.", "(B) Sad.", "(C) Angry.", "(D) Nervous."], ans: "(A)" }
+          ]
+        },
+        {
+          id: "art-11",
+          semesterId: "7A",
+          categoryId: "cat3",
+          page: "Page 20-21",
+          title: "World Animal Day: October Fourth",
+          wordCount: 150,
+          extraVocab: ["love (v.; n.愛)", "then (adv.那麼)"],
+          passage: `What date is it today? It is October fourth. It is an important date. It is a special day for animals. When is your favorite holiday? This is my favorite day. Today, I am at a big animal home. There are many animals here. First, I see a herd of elephants. There is a big elephant. There is a small elephant. They eat healthy food. Second, there are tigers and lions. They are beautiful. Third, I see a monkey and a fox. They play around a big tree. Fourth, there is a brown bear. It sleeps on its back. We help the animals. We clean the animal home. We give them food. The animals are lucky. I am thankful, too. Next month is November. When is Thanksgiving? It is in the fourth week of November. People eat turkey dinner then. But today, we only love the animals in the world!`,
+          questions: [
+            { q: "What is the story about?", options: ["(A) A brown bear and its healthy food.", "(B) A big dinner for Thanksgiving.", "(C) A beautiful tree in a big home.", "(D) Helping animals on a special day."], ans: "(D)" },
+            { q: "What animals does the writer see third?", options: ["(A) A big elephant and a small elephant.", "(B) Tigers and lions.", "(C) A brown bear.", "(D) A monkey and a fox."], ans: "(D)" },
+            { q: "What do we know about the writer from the story?", options: ["(A) The writer is very good to animals.", "(B) The writer wants to sleep like a bear.", "(C) The writer does not like turkeys.", "(D) The writer only visits the home in November."], ans: "(A)" },
+            { q: "What does the word 'herd' mean in the story?", options: ["(A) A special dinner.", "(B) A large tree.", "(C) A group of animals.", "(D) A healthy food."], ans: "(C)" },
+            { q: "How does the writer feel about October fourth?", options: ["(A) The writer likes this day very much.", "(B) The writer is nervous about the date.", "(C) The writer feels sad for the animals.", "(D) The writer is angry at the animal home."], ans: "(A)" }
+          ]
+        },
+        {
+          id: "art-12",
+          semesterId: "7A",
+          categoryId: "cat3",
+          page: "Page 22-23",
+          title: "A Volunteer Day at the Animal Park",
+          wordCount: 126,
+          extraVocab: ["break (n.休息)", "noon (n.中午)", "work (n.; v.工作)"],
+          passage: `I am a student. I help at an animal park. What date is it today? It is November fourth. It is an important date. There are many animals here. My work is about animals. First, I clean the park. There is a herd of zebras. I clean their home. Second, I give food to the animals. There are lions, tigers, and bears. They want food. Third, I look at the animals. Are they healthy? Yes, they are. When is my break? It is at noon. I eat my food. Next, I go back to work. There is an elephant. I give water to the elephant. I also help on holidays. I work around Christmas and Thanksgiving. I am thankful for the animals. They make me happy.`,
+          questions: [
+            { q: "What is the story about?", options: ["(A) A student's healthy lunch.", "(B) A student's favorite holiday.", "(C) A student's new pet dog.", "(D) A student's work with animals."], ans: "(D)" },
+            { q: "What does the student do second?", options: ["(A) Clean the zebras' home.", "(B) Give food to the animals.", "(C) Look at the elephant.", "(D) Eat food at noon."], ans: "(B)" },
+            { q: "Why does the student work on Thanksgiving?", options: ["(A) The animals need care every day.", "(B) The student needs money for food.", "(C) The park only opens on holidays.", "(D) The lions want to eat turkey."], ans: "(A)" },
+            { q: "What does 'healthy' mean in the story?", options: ["(A) Not sick.", "(B) Very hungry.", "(C) Very angry.", "(D) Not clean."], ans: "(A)" },
+            { q: "How does the writer tell us about the work?", options: ["(A) By asking many questions.", "(B) By naming all the animals in the world.", "(C) By talking about different holidays.", "(D) By giving the steps in order."], ans: "(D)" }
+          ]
+        },
+        {
+          id: "art-13",
+          semesterId: "7A",
+          categoryId: "cat3",
+          page: "Page 26-27",
+          title: "Animal Holiday & Year-Round Celebrations",
+          wordCount: 193,
+          extraVocab: ["choice (n.選擇)", "hill (n.山丘)", "sun (n.太陽)", "thing (n.事情)"],
+          passage: `I am a junior high school student. Today is an important date. What date is it? It is November fourth. It is our Animal Holiday. When is Thanksgiving? It is also in this month, but our holiday is before Thanksgiving. There are animals in the world. There is a herd of cows. There are horses and turkeys. There are lions, elephants, tigers, zebras, monkeys, foxes, and bears. We think about them. How about the bugs? We help them, too. We give healthy food to them. We never eat a turkey leg for dinner today. The turkeys are lucky. They are not nervous, and they do not cry. We walk around the park. We clean the park. We walk up the hill. We are out in the sun. We have only one Earth. We wash the horse's back. It is the right thing to do. A second holiday is Christmas in December. The third is New Year's Eve. My birthday is in January. The next holidays are in February, March, April, May, June, July, August, September, and October. But the Animal Holiday is my first choice. I am thankful for the animals.`,
+          questions: [
+            { q: "What is the reading about?", options: ["(A) A special holiday for animals.", "(B) A student's birthday party.", "(C) A big Thanksgiving dinner.", "(D) A new zoo in the city."], ans: "(A)" },
+            { q: "When is the Animal Holiday?", options: ["(A) It is on November fourth.", "(B) It is in December.", "(C) It is on New Year's Eve.", "(D) It is in January."], ans: "(A)" },
+            { q: "Why are the turkeys 'lucky' on this holiday?", options: ["(A) They can fly up the hill.", "(B) They get a lot of new friends.", "(C) People do not eat them for dinner.", "(D) People give them a warm home."], ans: "(C)" },
+            { q: "What does 'herd' mean in the reading?", options: ["(A) A kind of healthy food.", "(B) A group of animals.", "(C) A fun game in the park.", "(D) A clean place for bugs."], ans: "(B)" },
+            { q: "How does the student feel about the Animal Holiday?", options: ["(A) He loves it the most.", "(B) He thinks it is a bad day.", "(C) He feels nervous about it.", "(D) He is sad for the animals."], ans: "(A)" }
+          ]
+        }
+      ]
+    };
+
+    let currentSemesterId = "7A";
+    let currentCategoryId = "cat1";
+    let searchQuery = "";
+
+    const audioState = {
+      activeArticleId: null,
+      mode: 'tts',
+      isPlaying: false,
+      isPaused: false,
+      rate: 1.0,
+      currentUtterance: null,
+      customAudioEl: null,
+      selectedVoice: null
+    };
+
+    function initSpeechSynthesisVoices() {
+      if (!('speechSynthesis' in window)) return;
+      
+      const setVoice = () => {
+        const voices = window.speechSynthesis.getVoices();
+        const usVoice = voices.find(v => v.lang.replace('_', '-') === 'en-US' && (v.name.includes('Natural') || v.name.includes('Google') || v.name.includes('Samantha') || v.name.includes('Jenny')))
+                     || voices.find(v => v.lang.replace('_', '-') === 'en-US')
+                     || voices.find(v => v.lang.startsWith('en'));
+        if (usVoice) {
+          audioState.selectedVoice = usVoice;
+        }
+      };
+
+      setVoice();
+      if (speechSynthesis.onvoiceschanged !== undefined) {
+        speechSynthesis.onvoiceschanged = setVoice;
+      }
+    }
+    initSpeechSynthesisVoices();
+
+    const semesterTabsContainer = document.getElementById("semester-tabs-container");
+    const categoryTabsContainer = document.getElementById("category-tabs-container");
+    const articlesContainer = document.getElementById("articles-container");
+    const emptyState = document.getElementById("empty-state");
+    const currentBadge = document.getElementById("current-badge");
+    const currentCategoryTitle = document.getElementById("current-category-title");
+    const currentCategoryDesc = document.getElementById("current-category-desc");
+    const articleCountBadge = document.getElementById("article-count-badge");
+    const searchInput = document.getElementById("search-input");
+
+    const addModal = document.getElementById("add-modal");
+    const addArticleModalBtn = document.getElementById("add-article-modal-btn");
+    const closeModalBtn = document.getElementById("close-modal-btn");
+    const cancelModalBtn = document.getElementById("cancel-modal-btn");
+    const addArticleForm = document.getElementById("add-article-form");
+
+    function renderSemesterTabs() {
+      semesterTabsContainer.innerHTML = "";
+      curriculumData.semesters.forEach(sem => {
+        const isActive = sem.id === currentSemesterId;
+        const btn = document.createElement("button");
+        btn.className = `px-4 py-2 text-sm font-semibold rounded-xl whitespace-nowrap transition-all duration-200 flex items-center gap-1.5 ${
+          isActive 
+            ? "bg-indigo-600 text-white shadow-sm" 
+            : "text-slate-600 hover:text-indigo-600 hover:bg-slate-100"
+        }`;
+        btn.innerHTML = `<span>${sem.title}</span><span class="text-[11px] font-normal opacity-85 hidden sm:inline">(${sem.label})</span>`;
+        btn.addEventListener("click", () => {
+          selectSemester(sem.id);
+        });
+        semesterTabsContainer.appendChild(btn);
+      });
+    }
+
+    function selectSemester(semesterId) {
+      currentSemesterId = semesterId;
+      const categories = curriculumData.categories[semesterId] || [];
+      if (categories.length > 0) {
+        currentCategoryId = categories[0].id;
+      } else {
+        currentCategoryId = null;
+      }
+      renderSemesterTabs();
+      renderCategoryTabs();
+      renderContent();
+    }
+
+    function renderCategoryTabs() {
+      categoryTabsContainer.innerHTML = "";
+      const categories = curriculumData.categories[currentSemesterId] || [];
+
+      if (categories.length === 0) {
+        categoryTabsContainer.innerHTML = `<span class="text-xs text-slate-400 italic py-1">此年級暫無子分類單元</span>`;
+        return;
+      }
+
+      categories.forEach(cat => {
+        const isActive = cat.id === currentCategoryId;
+        const btn = document.createElement("button");
+        btn.className = `px-3.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all flex items-center gap-2 ${
+          isActive 
+            ? "bg-white text-indigo-700 shadow-xs border border-indigo-200" 
+            : "text-slate-600 hover:bg-white/60 hover:text-slate-900"
+        }`;
+        btn.innerHTML = `<i class="fa-solid ${cat.icon} text-xs ${isActive ? "text-indigo-600" : "text-slate-400"}"></i><span>${cat.title}</span>`;
+        btn.addEventListener("click", () => {
+          currentCategoryId = cat.id;
+          renderCategoryTabs();
+          renderContent();
+        });
+        categoryTabsContainer.appendChild(btn);
+      });
+    }
+
+    function renderContent() {
+      const activeSem = curriculumData.semesters.find(s => s.id === currentSemesterId);
+      const activeCategories = curriculumData.categories[currentSemesterId] || [];
+      const activeCat = activeCategories.find(c => c.id === currentCategoryId);
+
+      currentBadge.textContent = activeSem ? activeSem.title : "";
+
+      if (activeCat) {
+        currentCategoryTitle.textContent = activeCat.title;
+        currentCategoryDesc.textContent = activeCat.desc;
+      } else {
+        currentCategoryTitle.textContent = "未指定分類或暫無內容";
+        currentCategoryDesc.textContent = "請從上方選單選取分級或自行新增題庫文章。";
+      }
+
+      let list = curriculumData.articles.filter(item => {
+        const matchSem = item.semesterId === currentSemesterId;
+        const matchCat = currentCategoryId ? item.categoryId === currentCategoryId : true;
+        const matchSearch = searchQuery.trim() === "" || 
+          item.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+          item.passage.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          (item.page && item.page.toLowerCase().includes(searchQuery.toLowerCase()));
+        return matchSem && matchCat && matchSearch;
+      });
+
+      articleCountBadge.textContent = `共 ${list.length} 篇`;
+      articlesContainer.innerHTML = "";
+
+      if (list.length === 0) {
+        articlesContainer.classList.add("hidden");
+        emptyState.classList.remove("hidden");
+        return;
+      }
+
+      articlesContainer.classList.remove("hidden");
+      emptyState.classList.add("hidden");
+
+      list.forEach((art, idx) => {
+        const card = createArticleCard(art, idx + 1);
+        articlesContainer.appendChild(card);
+      });
+    }
+
+    // 切換題目分頁的核心函式
+    window.switchQuestionTab = function(artId, targetIdx, total) {
+      for (let i = 0; i < total; i++) {
+        const tabBtn = document.getElementById(`qtab-btn-${artId}-${i}`);
+        const pane = document.getElementById(`qpane-${artId}-${i}`);
+        if (!pane || !tabBtn) continue;
+
+        if (i === targetIdx) {
+          pane.classList.remove("hidden");
+          tabBtn.className = "px-3 py-1.5 text-xs font-bold rounded-lg bg-indigo-600 text-white shadow-xs transition-all";
+        } else {
+          pane.classList.add("hidden");
+          tabBtn.className = "px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 transition-all";
+        }
+      }
+    };
+
+    function createArticleCard(art, indexNumber) {
+      const card = document.createElement("article");
+      card.id = `card-${art.id}`;
+      card.className = "bg-white rounded-2xl border border-slate-200/80 shadow-xs hover:shadow-md transition-shadow duration-200 overflow-hidden";
+
+      const vocabHtml = art.extraVocab && art.extraVocab.length > 0 
+        ? art.extraVocab.map(v => `<span class="inline-block bg-amber-50 text-amber-800 text-[11px] font-medium px-2 py-0.5 rounded-md border border-amber-200/60">${v}</span>`).join(" ")
+        : `<span class="text-xs text-slate-400">無超綱單字</span>`;
+
+      // 產生題目分頁的 HTML（題號列於上方）
+      let quizBodyHtml = "";
+      if (art.questions && art.questions.length > 0) {
+        const totalQ = art.questions.length;
+        
+        // 上方分頁按鈕群
+        const tabButtonsHtml = art.questions.map((_, qIdx) => `
+          <button id="qtab-btn-${art.id}-${qIdx}" 
+                  onclick="switchQuestionTab('${art.id}', ${qIdx}, ${totalQ})" 
+                  class="px-3 py-1.5 text-xs font-semibold rounded-lg transition-all ${
+                    qIdx === 0 
+                      ? 'bg-indigo-600 text-white shadow-xs' 
+                      : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                  }">
+            第 ${qIdx + 1} 題
+          </button>
+        `).join("");
+
+        // 題目個別分頁內容（預設只顯示第 1 題）
+        const questionPanesHtml = art.questions.map((qObj, qIdx) => `
+          <div id="qpane-${art.id}-${qIdx}" class="${qIdx === 0 ? '' : 'hidden'} p-4 bg-white rounded-xl border border-slate-200 shadow-2xs text-sm transition-all">
+            <div class="flex items-center justify-between mb-3 pb-2 border-b border-slate-100">
+              <span class="text-xs font-bold px-2 py-0.5 rounded bg-indigo-50 text-indigo-700">Question ${qIdx + 1} of ${totalQ}</span>
+              <span class="text-xs text-slate-400">單選題</span>
+            </div>
+            <p class="font-bold text-slate-900 mb-3 text-sm sm:text-base">${qIdx + 1}. ${qObj.q}</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs sm:text-sm text-slate-700 pl-1 mb-4">
+              ${qObj.options.map(opt => `
+                <div class="p-2.5 rounded-lg border border-slate-200/80 bg-slate-50/50 hover:bg-indigo-50/50 hover:border-indigo-200 transition">
+                  ${opt}
+                </div>
+              `).join("")}
+            </div>
+            <div class="pt-2 border-t border-slate-100 flex items-center justify-between">
+              <div class="text-xs text-emerald-700 font-semibold bg-emerald-50 inline-flex items-center px-2.5 py-1.5 rounded-lg border border-emerald-200">
+                <i class="fa-solid fa-circle-check mr-1.5 text-sm"></i> 正確解答：${qObj.ans}
+              </div>
+              <div class="flex gap-1.5">
+                ${qIdx > 0 ? `<button onclick="switchQuestionTab('${art.id}', ${qIdx - 1}, ${totalQ})" class="px-2.5 py-1 text-xs rounded bg-slate-100 text-slate-600 hover:bg-slate-200"><i class="fa-solid fa-chevron-left mr-1"></i>上一題</button>` : ''}
+                ${qIdx < totalQ - 1 ? `<button onclick="switchQuestionTab('${art.id}', ${qIdx + 1}, ${totalQ})" class="px-2.5 py-1 text-xs rounded bg-indigo-50 text-indigo-600 hover:bg-indigo-100 font-semibold">下一題<i class="fa-solid fa-chevron-right ml-1"></i></button>` : ''}
+              </div>
+            </div>
+          </div>
+        `).join("");
+
+        quizBodyHtml = `
+          <!-- 題號按鈕分頁列 -->
+          <div class="flex items-center gap-1.5 overflow-x-auto custom-scrollbar pb-1 mb-3">
+            ${tabButtonsHtml}
+          </div>
+          <!-- 題目分頁區塊 -->
+          <div>
+            ${questionPanesHtml}
+          </div>
+        `;
+      } else {
+        quizBodyHtml = `<p class="text-xs text-slate-400 italic">尚無內建選擇題</p>`;
+      }
+
+      card.innerHTML = `
+        <!-- Card Header -->
+        <div class="p-5 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-50/40">
+          <div class="flex items-center gap-3">
+            <span class="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 font-bold text-sm flex items-center justify-center shrink-0 border border-indigo-100">
+              ${indexNumber}
+            </span>
+            <div>
+              <h3 class="font-bold text-slate-900 text-base sm:text-lg tracking-tight">${art.title}</h3>
+              <div class="flex items-center gap-2.5 text-xs text-slate-500 mt-0.5 flex-wrap">
+                <span class="inline-flex items-center gap-1"><i class="fa-regular fa-file-lines text-slate-400"></i> ${art.page || "教材篇章"}</span>
+                <span>&bull;</span>
+                <span class="inline-flex items-center gap-1"><i class="fa-solid fa-align-left text-slate-400"></i> ${art.wordCount || 150} words</span>
+                <span>&bull;</span>
+                <span class="inline-flex items-center gap-1 text-indigo-600 bg-indigo-50/80 px-2 py-0.5 rounded-md font-medium">
+                  <i class="fa-solid fa-volume-high text-[11px]"></i> 聽力練習支援
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="flex items-center gap-2 shrink-0">
+            <button onclick="toggleCardSection('${art.id}', 'passage')" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-indigo-50 text-indigo-700 hover:bg-indigo-100 transition flex items-center gap-1">
+              <i class="fa-solid fa-book-open"></i> 文章閱覽
+            </button>
+            <button onclick="toggleCardSection('${art.id}', 'quiz')" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 transition flex items-center gap-1">
+              <i class="fa-solid fa-list-check"></i> 測驗題 (${art.questions ? art.questions.length : 0})
+            </button>
+          </div>
+        </div>
+
+        <!-- Audio Player Bar -->
+        <div class="bg-indigo-50/60 border-b border-indigo-100/80 px-5 py-3">
+          <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+            <div class="flex items-center flex-wrap gap-2.5">
+              <button id="play-btn-${art.id}" onclick="handlePlayToggle('${art.id}')" class="inline-flex items-center justify-center gap-2 px-3.5 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-medium text-xs transition shadow-xs">
+                <i class="fa-solid fa-play text-xs"></i>
+                <span class="btn-text">播放朗讀</span>
+              </button>
+
+              <button onclick="stopAudio('${art.id}')" class="inline-flex items-center justify-center px-2.5 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-600 hover:bg-slate-100 text-xs transition shadow-2xs" title="停止播放">
+                <i class="fa-solid fa-square text-xs text-slate-500"></i>
+              </button>
+
+              <div id="soundwave-${art.id}" class="hidden items-center gap-1 h-5 px-2 bg-indigo-100/70 rounded-md">
+                <span class="wave-bar"></span>
+                <span class="wave-bar"></span>
+                <span class="wave-bar"></span>
+                <span class="wave-bar"></span>
+                <span class="wave-bar"></span>
+                <span class="text-[11px] font-semibold text-indigo-700 ml-1">朗讀中...</span>
+              </div>
+
+              <div class="flex items-center bg-white border border-slate-200 rounded-lg p-0.5 text-xs">
+                <span class="px-1.5 text-[11px] text-slate-400 font-medium"><i class="fa-solid fa-gauge-high mr-1"></i>語速</span>
+                <button onclick="changePlaybackSpeed('${art.id}', 0.75)" id="speed-075-${art.id}" class="px-2 py-0.5 rounded text-slate-600 hover:text-indigo-600 text-[11px] font-semibold transition">0.75x</button>
+                <button onclick="changePlaybackSpeed('${art.id}', 1.0)" id="speed-100-${art.id}" class="px-2 py-0.5 rounded bg-indigo-50 text-indigo-700 font-bold text-[11px] transition">1.0x</button>
+                <button onclick="changePlaybackSpeed('${art.id}', 1.25)" id="speed-125-${art.id}" class="px-2 py-0.5 rounded text-slate-600 hover:text-indigo-600 text-[11px] font-semibold transition">1.25x</button>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-2 text-xs">
+              <div class="inline-flex items-center bg-white/90 border border-slate-200 rounded-lg p-1 text-[11px]">
+                <button onclick="switchAudioMode('${art.id}', 'tts')" id="mode-tts-${art.id}" class="px-2 py-0.5 rounded font-semibold text-indigo-700 bg-indigo-50 transition">
+                  <i class="fa-solid fa-robot mr-1"></i>AI 語音朗讀
+                </button>
+                <button onclick="switchAudioMode('${art.id}', 'custom')" id="mode-custom-${art.id}" class="px-2 py-0.5 rounded font-medium text-slate-600 hover:text-slate-900 transition">
+                  <i class="fa-solid fa-file-audio mr-1"></i>錄音音檔
+                </button>
+              </div>
+
+              <label class="cursor-pointer text-slate-500 hover:text-indigo-600 bg-white border border-slate-200 px-2 py-1 rounded-lg text-[11px] flex items-center gap-1 shadow-2xs transition" title="更換或上傳自訂 MP3 檔">
+                <i class="fa-solid fa-upload text-[10px]"></i>
+                <span>掛載音檔</span>
+                <input type="file" accept="audio/*" class="hidden" onchange="handleFileUpload(event, '${art.id}')">
+              </label>
+            </div>
+          </div>
+
+          <audio id="native-audio-${art.id}" class="hidden" src="${art.audioUrl || ''}" preload="none"></audio>
+        </div>
+
+        <!-- Extra Vocab Bar -->
+        <div class="px-5 py-2.5 bg-slate-50/30 border-b border-slate-100 flex items-center flex-wrap gap-1.5 text-xs">
+          <span class="text-slate-500 font-medium mr-1"><i class="fa-solid fa-tag text-slate-400 text-[10px]"></i> 超範單字:</span>
+          ${vocabHtml}
+        </div>
+
+        <!-- Passage Text Container -->
+        <div id="passage-${art.id}" class="p-5 sm:p-6 text-slate-700 leading-relaxed font-sans text-sm sm:text-base border-b border-slate-100">
+          <div class="bg-indigo-50/30 rounded-xl p-4 sm:p-5 border border-indigo-100/50">
+            <p id="text-container-${art.id}" class="whitespace-pre-line tracking-wide">${wrapPassageSentences(art.passage, art.id)}</p>
+          </div>
+        </div>
+
+        <!-- Quiz Container (Tabbed per question) -->
+        <div id="quiz-${art.id}" class="p-5 sm:p-6 bg-slate-50/60">
+          <div class="flex items-center justify-between mb-2.5">
+            <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
+              <i class="fa-solid fa-clipboard-question text-indigo-500"></i> 閱讀測驗 (分頁單題檢視)
+            </h4>
+            <span class="text-xs text-slate-400">點擊上方分頁切換題目</span>
+          </div>
+          ${quizBodyHtml}
+        </div>
+      `;
+
+      return card;
+    }
+
+    function wrapPassageSentences(text, articleId) {
+      if (!text) return "";
+      const sentenceRegex = /([^.?!]+[.?!]+)/g;
+      let counter = 0;
+      return text.replace(sentenceRegex, (match) => {
+        const id = `s-${articleId}-${counter++}`;
+        return `<span id="${id}" class="sentence-token transition-colors duration-150">${match}</span>`;
+      });
+    }
+
+    window.toggleCardSection = function(id, type) {
+      const el = document.getElementById(`${type}-${id}`);
+      if (!el) return;
+      el.classList.toggle("hidden");
+    };
+
+    window.handlePlayToggle = function(articleId) {
+      const art = curriculumData.articles.find(a => a.id === articleId);
+      if (!art) return;
+
+      if (audioState.activeArticleId && audioState.activeArticleId !== articleId) {
+        stopAudio(audioState.activeArticleId);
+      }
+
+      audioState.activeArticleId = articleId;
+
+      const currentMode = document.getElementById(`mode-custom-${articleId}`).classList.contains("bg-indigo-50") ? 'custom' : 'tts';
+      audioState.mode = currentMode;
+
+      if (currentMode === 'tts') {
+        toggleTTS(art);
+      } else {
+        toggleNativeAudio(articleId);
+      }
+    };
+
+    function toggleTTS(art) {
+      if (!('speechSynthesis' in window)) {
+        alert("您的瀏覽器暫不支援 Web Speech API 語音合成功能，建議使用 Chrome / Edge 瀏覽器。");
+        return;
+      }
+
+      if (window.speechSynthesis.paused && audioState.isPaused && audioState.activeArticleId === art.id) {
+        window.speechSynthesis.resume();
+        audioState.isPaused = false;
+        audioState.isPlaying = true;
+        updateUIState(art.id, true);
+        return;
+      }
+
+      if (window.speechSynthesis.speaking && audioState.isPlaying && audioState.activeArticleId === art.id) {
+        window.speechSynthesis.pause();
+        audioState.isPaused = true;
+        audioState.isPlaying = false;
+        updateUIState(art.id, false, true);
+        return;
+      }
+
+      window.speechSynthesis.cancel();
+      clearHighlight(art.id);
+
+      const utterance = new SpeechSynthesisUtterance(art.passage);
+      utterance.lang = "en-US";
+      utterance.rate = audioState.rate || 1.0;
+      if (audioState.selectedVoice) {
+        utterance.voice = audioState.selectedVoice;
+      }
+
+      utterance.onboundary = function(event) {
+        if (event.name === 'sentence' || event.name === 'word') {
+          highlightSentenceAtChar(art.id, art.passage, event.charIndex);
+        }
+      };
+
+      utterance.onstart = function() {
+        audioState.isPlaying = true;
+        audioState.isPaused = false;
+        updateUIState(art.id, true);
+      };
+
+      utterance.onend = function() {
+        audioState.isPlaying = false;
+        audioState.isPaused = false;
+        audioState.activeArticleId = null;
+        updateUIState(art.id, false);
+        clearHighlight(art.id);
+      };
+
+      utterance.onerror = function(e) {
+        console.warn("TTS error:", e);
+        audioState.isPlaying = false;
+        audioState.isPaused = false;
+        updateUIState(art.id, false);
+        clearHighlight(art.id);
+      };
+
+      audioState.currentUtterance = utterance;
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function toggleNativeAudio(articleId) {
+      const audioEl = document.getElementById(`native-audio-${articleId}`);
+      if (!audioEl || !audioEl.src || audioEl.src === window.location.href) {
+        switchAudioMode(articleId, 'tts');
+        const art = curriculumData.articles.find(a => a.id === articleId);
+        if (art) toggleTTS(art);
+        return;
+      }
+
+      audioEl.playbackRate = audioState.rate || 1.0;
+
+      if (audioEl.paused) {
+        audioEl.play().then(() => {
+          audioState.isPlaying = true;
+          audioState.isPaused = false;
+          updateUIState(articleId, true);
+        }).catch(err => {
+          console.warn("Audio play blocked:", err);
+        });
+
+        audioEl.onended = () => {
+          audioState.isPlaying = false;
+          audioState.isPaused = false;
+          audioState.activeArticleId = null;
+          updateUIState(articleId, false);
+        };
+      } else {
+        audioEl.pause();
+        audioState.isPlaying = false;
+        audioState.isPaused = true;
+        updateUIState(articleId, false, true);
+      }
+    }
+
+    window.stopAudio = function(articleId) {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+      const audioEl = document.getElementById(`native-audio-${articleId}`);
+      if (audioEl) {
+        audioEl.pause();
+        audioEl.currentTime = 0;
+      }
+      audioState.isPlaying = false;
+      audioState.isPaused = false;
+      if (audioState.activeArticleId === articleId) {
+        audioState.activeArticleId = null;
+      }
+      updateUIState(articleId, false);
+      clearHighlight(articleId);
+    };
+
+    window.changePlaybackSpeed = function(articleId, speed) {
+      audioState.rate = speed;
+      [0.75, 1.0, 1.25].forEach(s => {
+        const idKey = s.toString().replace('.', '');
+        const btn = document.getElementById(`speed-${idKey}-${articleId}`);
+        if (btn) {
+          if (s === speed) {
+            btn.className = "px-2 py-0.5 rounded bg-indigo-50 text-indigo-700 font-bold text-[11px] transition";
+          } else {
+            btn.className = "px-2 py-0.5 rounded text-slate-600 hover:text-indigo-600 text-[11px] font-semibold transition";
+          }
+        }
+      });
+
+      if (audioState.activeArticleId === articleId) {
+        if (audioState.mode === 'tts' && window.speechSynthesis.speaking) {
+          const art = curriculumData.articles.find(a => a.id === articleId);
+          if (art) {
+            window.speechSynthesis.cancel();
+            toggleTTS(art);
+          }
+        } else {
+          const audioEl = document.getElementById(`native-audio-${articleId}`);
+          if (audioEl) audioEl.playbackRate = speed;
+        }
+      }
+    };
+
+    window.switchAudioMode = function(articleId, mode) {
+      const ttsBtn = document.getElementById(`mode-tts-${articleId}`);
+      const customBtn = document.getElementById(`mode-custom-${articleId}`);
+      const audioEl = document.getElementById(`native-audio-${articleId}`);
+
+      stopAudio(articleId);
+
+      if (mode === 'tts') {
+        ttsBtn.className = "px-2 py-0.5 rounded font-semibold text-indigo-700 bg-indigo-50 transition";
+        customBtn.className = "px-2 py-0.5 rounded font-medium text-slate-600 hover:text-slate-900 transition";
+      } else {
+        if (!audioEl.src || audioEl.src === window.location.href) {
+          const promptUrl = prompt("請輸入音檔連結 (例如 MP3 網址) 或稍後點選「掛載音檔」上傳：", "");
+          if (promptUrl && promptUrl.trim()) {
+            audioEl.src = promptUrl.trim();
+          } else {
+            return;
+          }
+        }
+        customBtn.className = "px-2 py-0.5 rounded font-semibold text-indigo-700 bg-indigo-50 transition";
+        ttsBtn.className = "px-2 py-0.5 rounded font-medium text-slate-600 hover:text-slate-900 transition";
+      }
+    };
+
+    window.handleFileUpload = function(event, articleId) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const objectUrl = URL.createObjectURL(file);
+      const audioEl = document.getElementById(`native-audio-${articleId}`);
+      if (audioEl) {
+        audioEl.src = objectUrl;
+        switchAudioMode(articleId, 'custom');
+        alert(`已成功掛載音檔：${file.name}，可立即點擊播放！`);
+      }
+    };
+
+    function updateUIState(articleId, isPlaying, isPaused = false) {
+      const playBtn = document.getElementById(`play-btn-${articleId}`);
+      const soundwave = document.getElementById(`soundwave-${articleId}`);
+      if (!playBtn) return;
+
+      const btnText = playBtn.querySelector(".btn-text");
+      const icon = playBtn.querySelector("i");
+
+      if (isPlaying) {
+        playBtn.className = "inline-flex items-center justify-center gap-2 px-3.5 py-1.5 rounded-lg bg-amber-600 hover:bg-amber-700 text-white font-medium text-xs transition shadow-xs";
+        btnText.textContent = "暫停朗讀";
+        icon.className = "fa-solid fa-pause text-xs";
+        if (soundwave) soundwave.classList.remove("hidden");
+        if (soundwave) soundwave.classList.add("flex");
+      } else if (isPaused) {
+        playBtn.className = "inline-flex items-center justify-center gap-2 px-3.5 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-medium text-xs transition shadow-xs";
+        btnText.textContent = "繼續朗讀";
+        icon.className = "fa-solid fa-play text-xs";
+        if (soundwave) soundwave.classList.remove("hidden");
+        if (soundwave) soundwave.classList.add("flex");
+      } else {
+        playBtn.className = "inline-flex items-center justify-center gap-2 px-3.5 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-medium text-xs transition shadow-xs";
+        btnText.textContent = "播放朗讀";
+        icon.className = "fa-solid fa-play text-xs";
+        if (soundwave) soundwave.classList.add("hidden");
+        if (soundwave) soundwave.classList.remove("flex");
+      }
+    }
+
+    function highlightSentenceAtChar(articleId, fullText, charIndex) {
+      const container = document.getElementById(`text-container-${articleId}`);
+      if (!container) return;
+
+      const tokens = container.querySelectorAll(".sentence-token");
+      let accumLength = 0;
+      tokens.forEach((span) => {
+        const textLength = span.textContent.length;
+        if (charIndex >= accumLength && charIndex < accumLength + textLength) {
+          span.classList.add("reading-highlight");
+        } else {
+          span.classList.remove("reading-highlight");
+        }
+        accumLength += textLength;
+      });
+    }
+
+    function clearHighlight(articleId) {
+      const container = document.getElementById(`text-container-${articleId}`);
+      if (!container) return;
+      container.querySelectorAll(".sentence-token").forEach(span => {
+        span.classList.remove("reading-highlight");
+      });
+    }
+
+    addArticleModalBtn.addEventListener("click", () => {
+      document.getElementById("modal-semester").value = currentSemesterId;
+      addModal.classList.remove("hidden");
+    });
+
+    closeModalBtn.addEventListener("click", () => addModal.classList.add("hidden"));
+    cancelModalBtn.addEventListener("click", () => addModal.classList.add("hidden"));
+
+    addArticleForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const sem = document.getElementById("modal-semester").value;
+      const cat = document.getElementById("modal-category").value;
+      const title = document.getElementById("modal-title").value.trim();
+      const page = document.getElementById("modal-page").value.trim() || "自訂篇章";
+      const words = parseInt(document.getElementById("modal-words").value, 10) || 120;
+      const vocabRaw = document.getElementById("modal-vocab").value.trim();
+      const audioUrl = document.getElementById("modal-audio-url").value.trim();
+      const content = document.getElementById("modal-content").value.trim();
+
+      const vocabList = vocabRaw ? vocabRaw.split(",").map(s => s.trim()).filter(Boolean) : [];
+
+      const newArticle = {
+        id: "art-" + Date.now(),
+        semesterId: sem,
+        categoryId: cat,
+        page: page,
+        title: title,
+        wordCount: words,
+        audioUrl: audioUrl || null,
+        extraVocab: vocabList,
+        passage: content,
+        questions: [
+          {
+            q: "What is the main topic of the reading?",
+            options: ["(A) A story about friends.", "(B) General discussion.", "(C) Personal reflection.", "(D) Daily activities."],
+            ans: "(B)"
+          }
+        ]
+      };
+
+      curriculumData.articles.unshift(newArticle);
+
+      currentSemesterId = sem;
+      currentCategoryId = cat;
+      renderSemesterTabs();
+      renderCategoryTabs();
+      renderContent();
+
+      addArticleForm.reset();
+      addModal.classList.add("hidden");
+    });
+
+    searchInput.addEventListener("input", (e) => {
+      searchQuery = e.target.value;
+      renderContent();
+    });
+
+    window.onload = function() {
+      renderSemesterTabs();
+      renderCategoryTabs();
+      renderContent();
+    };
+  </script>
+</body>
+</html>
