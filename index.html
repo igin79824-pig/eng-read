@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Junior High English Reading Platform</title>
+  <title>Junior High English Reading Hub</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <style>
@@ -17,7 +17,7 @@
       display: inline-block;
       width: 3px;
       margin: 0 1px;
-      background-color: #3b82f6;
+      background-color: #4f46e5;
       border-radius: 2px;
       animation: soundwave 1s infinite ease-in-out;
     }
@@ -44,7 +44,7 @@
         </div>
         <div>
           <h1 class="text-xl sm:text-2xl font-bold tracking-tight">Junior High English Reading Hub</h1>
-          <p class="text-xs text-indigo-200">Interactive Curriculum Reader & Audio Accompaniment</p>
+          <p class="text-xs text-indigo-200">Interactive Reading Materials & Sentence Audio Tracker</p>
         </div>
       </div>
       <div class="flex items-center gap-2">
@@ -143,12 +143,12 @@
 
         <div>
           <label class="block text-xs font-semibold text-slate-700 mb-1">Article Title</label>
-          <input type="text" id="modalTitle" required class="w-full text-sm border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500" placeholder="e.g. My Favorite Living Room" />
+          <input type="text" id="modalTitle" required class="w-full text-sm border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500" placeholder="e.g. A New Family Photo" />
         </div>
 
         <div>
           <label class="block text-xs font-semibold text-slate-700 mb-1">Target Vocabulary / Supplementary Notes</label>
-          <input type="text" id="modalExtraVocab" class="w-full text-sm border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500" placeholder="e.g. favorite (adj.), cousin (n.)" />
+          <input type="text" id="modalExtraVocab" class="w-full text-sm border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500" placeholder="e.g. cousin (n.), favorite (adj.)" />
         </div>
 
         <div>
@@ -175,7 +175,6 @@
   </footer>
 
   <script>
-    // System Data: Grade Levels
     const GRADES = [
       { id: "7A", name: "Grade 7 Sem 1" },
       { id: "7B", name: "Grade 7 Sem 2" },
@@ -185,31 +184,19 @@
       { id: "9B", name: "Grade 9 Sem 2" }
     ];
 
-    // System Data: Categories by Grade
     const CATEGORIES = {
       "7A": [
         { id: "family", name: "1. Family & Occupations", icon: "fa-people-roof" },
         { id: "activities", name: "2. Activities & Rules", icon: "fa-calendar-check" },
         { id: "animals", name: "3. Animals & Dates", icon: "fa-paw" }
       ],
-      "7B": [
-        { id: "general", name: "General Readings", icon: "fa-book" }
-      ],
-      "8A": [
-        { id: "general", name: "General Readings", icon: "fa-book" }
-      ],
-      "8B": [
-        { id: "general", name: "General Readings", icon: "fa-book" }
-      ],
-      "9A": [
-        { id: "general", name: "General Readings", icon: "fa-book" }
-      ],
-      "9B": [
-        { id: "general", name: "General Readings", icon: "fa-book" }
-      ]
+      "7B": [{ id: "general", name: "General Readings", icon: "fa-book" }],
+      "8A": [{ id: "general", name: "General Readings", icon: "fa-book" }],
+      "8B": [{ id: "general", name: "General Readings", icon: "fa-book" }],
+      "9A": [{ id: "general", name: "General Readings", icon: "fa-book" }],
+      "9B": [{ id: "general", name: "General Readings", icon: "fa-book" }]
     };
 
-    // Articles Database
     let articlesData = [
       // 7A - Category 1: Family & Occupations
       {
@@ -221,14 +208,7 @@
         wordCount: 178,
         extraVocab: "love (v.; n.), thing (n.)",
         audioUrl: "",
-        content: `I am a junior high school student. My name is Sam. Welcome to my new house. This is my living room. The walls are purple. Purple is my favorite color. Look at those sofas. They are gray and brown. They are very old, but they are really nice. Who is on the sofa? It is my young cousin, Lily. She is one year old. She is a beautiful baby. Her mother is my aunt. My aunt is a housewife. Her husband is my uncle. He is an office worker. Where are my parents? They are in the kitchen. They are hungry. They eat a brown cookie. Look at these things on the table. They are my notebook, my marker, and my brush. Those are gifts from my new classmate, Tom. He is a handsome boy. His mother is a police officer. His father is a writer. Where is my pencil case? It is not here. Oh, I see it. It is in the dining room. My house is very beautiful. I love my dear family and my house.`,
-        questions: [
-          { q: "(1) What is the story mainly about?", options: ["(A) A boy and his school.", "(B) A boy and his house.", "(C) A boy and his pencil case.", "(D) A boy and his uncle."], ans: "(B)" },
-          { q: "(2) Where are Sam's parents?", options: ["(A) In the kitchen.", "(B) On the brown sofa.", "(C) In the living room.", "(D) In the dining room."], ans: "(A)" },
-          { q: "(3) Who gives the notebook, marker, and brush to Sam?", options: ["(A) His cousin Lily.", "(B) His classmate Tom.", "(C) His uncle.", "(D) His aunt."], ans: "(B)" },
-          { q: "(4) What does the word 'beautiful' mean in the story?", options: ["(A) Very old and gray.", "(B) Very hungry for food.", "(C) Very nice to look at.", "(D) Very bad and dirty."], ans: "(C)" },
-          { q: "(5) How does Sam feel about his house?", options: ["(A) He hates his house.", "(B) He is afraid of his house.", "(C) He likes his house.", "(D) He is sad about his house."], ans: "(C)" }
-        ]
+        content: `I am a junior high school student. My name is Sam. Welcome to my new house. This is my living room. The walls are purple. Purple is my favorite color. Look at those sofas. They are gray and brown. They are very old, but they are really nice. Who is on the sofa? It is my young cousin, Lily. She is one year old. She is a beautiful baby. Her mother is my aunt. My aunt is a housewife. Her husband is my uncle. He is an office worker. Where are my parents? They are in the kitchen. They are hungry. They eat a brown cookie. Look at these things on the table. They are my notebook, my marker, and my brush. Those are gifts from my new classmate, Tom. He is a handsome boy. His mother is a police officer. His father is a writer. Where is my pencil case? It is not here. Oh, I see it. It is in the dining room. My house is very beautiful. I love my dear family and my house.`
       },
       {
         id: "art-2",
@@ -239,14 +219,7 @@
         wordCount: 173,
         extraVocab: "now (adv.)",
         audioUrl: "",
-        content: `I am a junior high school student. These are pictures on the purple wall in my living room. Who are those people? They are my dear family. Who is that young woman? She is my aunt. She is a police officer. She is very beautiful. Where is her husband? He is my uncle. He is a writer. He is in the dining room. His notebook and pencil case are brown. His marker and brush are gray. His favorite color is gray. Those are my parents. My mother is an office worker. My father is a singer. Who is that handsome boy? He is my cousin. He is a new elementary school student. He is eight years old. Where is he now? He is on the sofa. He is hungry. Maybe he wants a cookie. Where is the baby? She is the daughter of my uncle. She is in the kitchen with my grandmother. My grandmother is a housewife. I see a gift for my new classmate, too. It is really a nice family.`,
-        questions: [
-          { q: "(1) What is the main idea of the reading?", options: ["(A) The writer is making cookies in the kitchen.", "(B) The writer is looking for a gift for his new classmate.", "(C) The writer is painting the wall of his living room.", "(D) The writer is introducing his family members and their jobs."], ans: "(D)" },
-          { q: "(2) Where is the writer's uncle?", options: ["(A) In the living room.", "(B) In the dining room.", "(C) In the kitchen.", "(D) On the sofa."], ans: "(B)" },
-          { q: "(3) Why is the cousin on the sofa?", options: ["(A) He is hungry and wants some food.", "(B) He wants to write in a notebook.", "(C) He wants to play with the baby.", "(D) He is waiting for his new classmate."], ans: "(A)" },
-          { q: "(4) What does the word 'handsome' mean in the reading?", options: ["(A) Very angry.", "(B) Good-looking.", "(C) Too old.", "(D) Really hungry."], ans: "(B)" },
-          { q: "(5) How does the writer introduce his family members?", options: ["(A) By writing a letter to his new classmate.", "(B) By talking about their favorite food in the kitchen.", "(C) By asking questions and giving answers about the pictures.", "(D) By drawing a big family tree on the purple wall."], ans: "(C)" }
-        ]
+        content: `I am a junior high school student. These are pictures on the purple wall in my living room. Who are those people? They are my dear family. Who is that young woman? She is my aunt. She is a police officer. She is very beautiful. Where is her husband? He is my uncle. He is a writer. He is in the dining room. His notebook and pencil case are brown. His marker and brush are gray. His favorite color is gray. Those are my parents. My mother is an office worker. My father is a singer. Who is that handsome boy? He is my cousin. He is a new elementary school student. He is eight years old. Where is he now? He is on the sofa. He is hungry. Maybe he wants a cookie. Where is the baby? She is the daughter of my uncle. She is in the kitchen with my grandmother. My grandmother is a housewife. I see a gift for my new classmate, too. It is really a nice family.`
       },
       {
         id: "art-3",
@@ -257,14 +230,7 @@
         wordCount: 147,
         extraVocab: "earth (n.), great (adj.), love (v.; n.), man (n.), paint (v.; n.), thing (n.), toy (n.)",
         audioUrl: "",
-        content: `Who is that young woman? She is my cousin, Lisa. She is a writer. Where is she? She is in the living room of our house. What are those things on the sofa? Those are gifts for her family. Lisa is very nice. These are old notebooks. They are brown and gray. But they are very beautiful. Who is that handsome man? He is my uncle. He is a police officer. These are gifts for him. They are a new pencil case and a purple marker. Lisa paints old boxes with a brush. Where are the mice? Oh, they are toy mice! They are for the baby. The baby is one year old. He is very hungry for a cookie. Maybe these are cookie boxes? No, they are old boxes. Lisa is a great cousin. Her gifts are good for the earth. We love these nice gifts.`,
-        questions: [
-          { q: "(1) What is the reading mainly about?", options: ["(A) A beautiful house and a baby.", "(B) A police officer and his work.", "(C) A young woman and her gifts.", "(D) A hungry boy and some cookies."], ans: "(C)" },
-          { q: "(2) Where is Lisa?", options: ["(A) In the kitchen.", "(B) In the office.", "(C) In the dining room.", "(D) In the living room."], ans: "(D)" },
-          { q: "(3) Why are Lisa's gifts good for the earth?", options: ["(A) She cleans the living room with a brush.", "(B) She buys new notebooks for her family.", "(C) She uses old boxes for her gifts.", "(D) She feeds the hungry baby with cookies."], ans: "(C)" },
-          { q: "(4) What does 'great' mean in the reading?", options: ["(A) Very old and gray.", "(B) Very hungry and sad.", "(C) Very good and nice.", "(D) Very tall and young."], ans: "(C)" },
-          { q: "(5) How does the writer feel about Lisa's gifts?", options: ["(A) The writer loves them very much.", "(B) The writer is angry about them.", "(C) The writer thinks they are dirty.", "(D) The writer does not want them."], ans: "(A)" }
-        ]
+        content: `Who is that young woman? She is my cousin, Lisa. She is a writer. Where is she? She is in the living room of our house. What are those things on the sofa? Those are gifts for her family. Lisa is very nice. These are old notebooks. They are brown and gray. But they are very beautiful. Who is that handsome man? He is my uncle. He is a police officer. These are gifts for him. They are a new pencil case and a purple marker. Lisa paints old boxes with a brush. Where are the mice? Oh, they are toy mice! They are for the baby. The baby is one year old. He is very hungry for a cookie. Maybe these are cookie boxes? No, they are old boxes. Lisa is a great cousin. Her gifts are good for the earth. We love these nice gifts.`
       },
       {
         id: "art-4",
@@ -275,14 +241,7 @@
         wordCount: 142,
         extraVocab: "None",
         audioUrl: "",
-        content: `Hello! I am a junior high school student. This is my house. This is the living room. Who are those people on the sofa? They are my dear family. Where is my aunt? She is in the kitchen. She is a young woman. She is a police officer. She is very beautiful. Her husband is my uncle. He is a writer. He is handsome. He is in the dining room. These are their children. My cousin is a new classmate at my school. He is thirteen years old. He is a really nice singer, too. The baby is his sister. Where are my parents? They are office workers. They are not at home. Maybe they are hungry. I have a gift for them. It is a purple pencil case. Purple is their favorite color. It is nice to meet you. See you!`,
-        questions: [
-          { q: "(1) What is the reading about?", options: ["(A) A police officer's new house.", "(B) A student's favorite color.", "(C) A student's family members.", "(D) A nice singer at a school."], ans: "(C)" },
-          { q: "(2) Where is the uncle?", options: ["(A) In the kitchen.", "(B) In the dining room.", "(C) On the sofa.", "(D) At the school."], ans: "(B)" },
-          { q: "(3) Who is thirteen years old?", options: ["(A) The writer.", "(B) The cousin.", "(C) The baby.", "(D) The aunt."], ans: "(B)" },
-          { q: "(4) What does 'them' mean in the reading?", options: ["(A) The uncle and aunt.", "(B) The children.", "(C) The parents.", "(D) The new classmates."], ans: "(C)" },
-          { q: "(5) How does the writer introduce the family members?", options: ["(A) By writing about their favorite food.", "(B) By asking questions about them.", "(C) By singing a song to them.", "(D) By drawing a picture of them."], ans: "(B)" }
-        ]
+        content: `Hello! I am a junior high school student. This is my house. This is the living room. Who are those people on the sofa? They are my dear family. Where is my aunt? She is in the kitchen. She is a young woman. She is a police officer. She is very beautiful. Her husband is my uncle. He is a writer. He is handsome. He is in the dining room. These are their children. My cousin is a new classmate at my school. He is thirteen years old. He is a really nice singer, too. The baby is his sister. Where are my parents? They are office workers. They are not at home. Maybe they are hungry. I have a gift for them. It is a purple pencil case. Purple is their favorite color. It is nice to meet you. See you!`
       },
       {
         id: "art-5",
@@ -293,14 +252,7 @@
         wordCount: 138,
         extraVocab: "love (v.; n.), man (n.), member (n.)",
         audioUrl: "",
-        content: `See my new picture. These are my family members in the house. Who is the handsome man? He is my father. He is a police officer. Where is he? He is in the living room. Those are his notebooks and markers. Who is the beautiful woman? She is my mother. She is a writer. She is in the kitchen. Her favorite color is purple. The wall is purple. Who is the young boy? He is my cousin. He is a junior high school student. He is in the dining room. He is really hungry. Those are his brown cookies. Where is the baby? She is my uncle's daughter. She is one year old. She is on the gray sofa. I am a junior high school student, too. My parents are very nice. I love my dear family.`,
-        questions: [
-          { q: "(1) What is the story about?", options: ["(A) A busy police station.", "(B) A family in a house.", "(C) A new junior high school.", "(D) A beautiful gray sofa."], ans: "(B)" },
-          { q: "(2) Where is the writer's mother?", options: ["(A) In the living room.", "(B) On the gray sofa.", "(C) In the dining room.", "(D) In the kitchen."], ans: "(D)" },
-          { q: "(3) What do we know about the young boy from the story?", options: ["(A) He is a police officer.", "(B) He wants to eat.", "(C) He is one year old.", "(D) He is a good writer."], ans: "(B)" },
-          { q: "(4) What does the word 'handsome' mean in the story?", options: ["(A) Too old.", "(B) Very angry.", "(C) Really hungry.", "(D) Nice-looking."], ans: "(D)" },
-          { q: "(5) How does the writer feel about the family?", options: ["(A) The writer loves them very much.", "(B) The writer is afraid of them.", "(C) The writer is angry with them.", "(D) The writer is sad about them."], ans: "(A)" }
-        ]
+        content: `See my new picture. These are my family members in the house. Who is the handsome man? He is my father. He is a police officer. Where is he? He is in the living room. Those are his notebooks and markers. Who is the beautiful woman? She is my mother. She is a writer. She is in the kitchen. Her favorite color is purple. The wall is purple. Who is the young boy? He is my cousin. He is a junior high school student. He is in the dining room. He is really hungry. Those are his brown cookies. Where is the baby? She is my uncle's daughter. She is one year old. She is on the gray sofa. I am a junior high school student, too. My parents are very nice. I love my dear family.`
       },
 
       // 7A - Category 2: Activities & Rules
@@ -313,14 +265,7 @@
         wordCount: 151,
         extraVocab: "cellphone (n.), enjoy (v.), into (prep.), meeting (n.), then (adv.)",
         audioUrl: "",
-        content: `Wake up, everyone! What day is it today? It is Saturday. We are going to the museum today. Hurry, please! What time is the museum class? It is at nine a.m. We are meeting many guys from our English class. Let's take a bus together. Now, we are walking into the museum. Read the sign. Please be quiet and follow the rules. Turn off your cellphone. Do not fight or talk. We can study a great dinosaur and a cute mummy here. We can use the magic lab for free. Please be careful with the rocks. Wash your hands after the lab. Then, we are going to a K-pop concert! It is at two p.m. The popular band is ready on the stage. Many fans are waiting. We can enjoy the music and a video. What time is the meet-and-greet? It is at four p.m. It is a great weekend!`,
-        questions: [
-          { q: "(1) What is the story about?", options: ["(A) A weekend trip to a museum and a concert.", "(B) A magic lab at a popular school.", "(C) A music video about a great dinosaur.", "(D) A class rule for washing hands."], ans: "(A)" },
-          { q: "(2) What time is the K-pop concert?", options: ["(A) At nine a.m.", "(B) At ten a.m.", "(C) At two p.m.", "(D) At four p.m."], ans: "(C)" },
-          { q: "(3) Why do the students wash their hands?", options: ["(A) They want to eat some food at the museum.", "(B) They finish their class in the magic lab.", "(C) They are cleaning the stage for the band.", "(D) They are ready to take a bus home."], ans: "(B)" },
-          { q: "(4) What does the sign in the museum say?", options: ["(A) Do not study.", "(B) Do not talk.", "(C) Do not use the lab.", "(D) Do not wash your hands."], ans: "(B)" },
-          { q: "(5) How does the writer feel about the weekend?", options: ["(A) Tired.", "(B) Angry.", "(C) Sad.", "(D) Happy."], ans: "(D)" }
-        ]
+        content: `Wake up, everyone! What day is it today? It is Saturday. We are going to the museum today. Hurry, please! What time is the museum class? It is at nine a.m. We are meeting many guys from our English class. Let's take a bus together. Now, we are walking into the museum. Read the sign. Please be quiet and follow the rules. Turn off your cellphone. Do not fight or talk. We can study a great dinosaur and a cute mummy here. We can use the magic lab for free. Please be careful with the rocks. Wash your hands after the lab. Then, we are going to a K-pop concert! It is at two p.m. The popular band is ready on the stage. Many fans are waiting. We can enjoy the music and a video. What time is the meet-and-greet? It is at four p.m. It is a great weekend!`
       },
       {
         id: "art-7",
@@ -331,14 +276,7 @@
         wordCount: 120,
         extraVocab: "photo (n.)",
         audioUrl: "",
-        content: `Wake up, guys! Hurry! What day is today? It is Saturday. It is the weekend! What time is it? It is 9 a.m. Let's go to the K-pop meet-and-greet! The Magic Rocks is a very popular band. Many fans are waiting at the place now. Look! The band is walking on the stage. Everyone is taking videos. Oh, please be careful. We can see them, but we cannot fight. Please follow the rules. Be safe. Do not talk. Be quiet. We can wait together. Now, the band is signing for the fans. They are very cute and great. We can take photos with them. After the party, let's wash our hands. We can have a great time today!`,
-        questions: [
-          { q: "(1) What is the reading mainly about?", options: ["(A) A quiet morning in a magic museum.", "(B) A fun weekend at a popular band's meet-and-greet.", "(C) A music class with a great teacher.", "(D) A fight at a K-pop concert."], ans: "(B)" },
-          { q: "(2) What time is the meet-and-greet?", options: ["(A) 8 a.m.", "(B) 10 a.m.", "(C) 9 a.m.", "(D) 11 a.m."], ans: "(C)" },
-          { q: "(3) Why does the writer say 'cannot fight' and 'follow the rules'?", options: ["(A) Because the fans are tired and want to sleep.", "(B) Because the band is playing a game with the fans.", "(C) Because the writer wants everyone to be safe.", "(D) Because the music is too loud for the guys."], ans: "(C)" },
-          { q: "(4) What does 'signing' mean in the reading?", options: ["(A) Washing hands with everyone.", "(B) Singing a popular song on the stage.", "(C) Taking videos of the cute guys.", "(D) Writing names on paper for the fans."], ans: "(D)" },
-          { q: "(5) What do the fans do after the meet-and-greet?", options: ["(A) They walk on the stage.", "(B) They fight for a place.", "(C) They wake up early.", "(D) They wash their hands."], ans: "(D)" }
-        ]
+        content: `Wake up, guys! Hurry! What day is today? It is Saturday. It is the weekend! What time is it? It is 9 a.m. Let's go to the K-pop meet-and-greet! The Magic Rocks is a very popular band. Many fans are waiting at the place now. Look! The band is walking on the stage. Everyone is taking videos. Oh, please be careful. We can see them, but we cannot fight. Please follow the rules. Be safe. Do not talk. Be quiet. We can wait together. Now, the band is signing for the fans. They are very cute and great. We can take photos with them. After the party, let's wash our hands. We can have a great time today!`
       },
       {
         id: "art-8",
@@ -349,14 +287,7 @@
         wordCount: 128,
         extraVocab: "city (n.), make (v.), photo (n.), reporter (n.), visit (v.; n.)",
         audioUrl: "",
-        content: `Wake up, everyone! What day is it today? It is Saturday! What time is it now? It is 10 a.m. I am a student reporter. I am reporting from the city museum. A very popular K-pop band is visiting the museum today. Many fans are waiting together. They are ready for the meet-and-greet. The band is making a new music video with a magic dinosaur rock here. The fans are reading a big sign. The sign says, "Please be careful. Follow the rules. Do not fight." Let's be safe. Please wait. You can take photos, but please turn off your music. Be quiet in the museum. You can meet the guys in the band. Hurry up, but do not run! Let's have a great weekend together!`,
-        questions: [
-          { q: "(1) What is the news report mainly about?", options: ["(A) A K-pop band's event and the rules.", "(B) A student reporter's great weekend.", "(C) A magic dinosaur rock in the museum.", "(D) A fight at the city museum today."], ans: "(A)" },
-          { q: "(2) What time is the student reporting from the museum?", options: ["(A) 8 a.m.", "(B) 10 p.m.", "(C) 10 a.m.", "(D) 8 p.m."], ans: "(C)" },
-          { q: "(3) Why does the sign say 'Do not fight'?", options: ["(A) Because the fans are making a new video.", "(B) Because the band is sleeping in the museum.", "(C) Because the museum wants a safe place.", "(D) Because the reporter is taking many photos."], ans: "(C)" },
-          { q: "(4) What does 'meet-and-greet' mean in the reading?", options: ["(A) A place to buy a magic rock.", "(B) A time to say hello to the band.", "(C) A rule for the city museum.", "(D) A sign with a dinosaur on it."], ans: "(B)" },
-          { q: "(5) How does the student reporter end the news report?", options: ["(A) By asking everyone to wake up.", "(B) By telling the time and the day.", "(C) By reading a big sign to the fans.", "(D) By wishing everyone a great weekend."], ans: "(D)" }
-        ]
+        content: `Wake up, everyone! What day is it today? It is Saturday! What time is it now? It is 10 a.m. I am a student reporter. I am reporting from the city museum. A very popular K-pop band is visiting the museum today. Many fans are waiting together. They are ready for the meet-and-greet. The band is making a new music video with a magic dinosaur rock here. The fans are reading a big sign. The sign says, "Please be careful. Follow the rules. Do not fight." Let's be safe. Please wait. You can take photos, but please turn off your music. Be quiet in the museum. You can meet the guys in the band. Hurry up, but do not run! Let's have a great weekend together!`
       },
       {
         id: "art-9",
@@ -367,14 +298,7 @@
         wordCount: 155,
         extraVocab: "about (adv.), photo (n.)",
         audioUrl: "",
-        content: `What day is today? Today is Saturday. It is the weekend. What time is it? It is 9 a.m. "Wake up, guys!" I say. "Let's go to the magic dinosaur museum together." We are taking a bus now. We are ready for a great time. At the museum, we see a man with a sign. The sign is about the rules. "Please read the sign," the man says. "Follow the rules, and everyone can be safe in this place." What can we do here? We can see many cute dinosaur rocks and a big mummy. We can take photos. But we have rules. "Please be quiet. Do not talk or fight," the sign says. A boy is running. "Be careful," I say. "Do not run. Please wait." Another guy is playing music. "Turn off the video music, please," the man says. After the museum, we wash our hands. We are having a great weekend.`,
-        questions: [
-          { q: "(1) What is the story about?", options: ["(A) The rules at a dinosaur museum.", "(B) A fun party on the weekend.", "(C) A boy playing video music.", "(D) The time of a music concert."], ans: "(A)" },
-          { q: "(2) What can the students see at the museum?", options: ["(A) A pop concert.", "(B) A magic bus.", "(C) A music video.", "(D) A big mummy."], ans: "(D)" },
-          { q: "(3) Why does the man ask the guy to turn off the video music?", options: ["(A) Because the music is great.", "(B) Because they are at a concert.", "(C) Because the sign says to be quiet.", "(D) Because the guy is fighting with a boy."], ans: "(C)" },
-          { q: "(4) In the reading, what does 'follow' mean?", options: ["(A) To take a bus to a place.", "(B) To do what the rules say.", "(C) To wash hands after class.", "(D) To wake up at 9 a.m."], ans: "(B)" },
-          { q: "(5) What does the writer think about the museum rules?", options: ["(A) They are bad for the weekend.", "(B) They make the students want to fight.", "(C) They are only for the magic dinosaur.", "(D) They make the museum a safe place."], ans: "(D)" }
-        ]
+        content: `What day is today? Today is Saturday. It is the weekend. What time is it? It is 9 a.m. "Wake up, guys!" I say. "Let's go to the magic dinosaur museum together." We are taking a bus now. We are ready for a great time. At the museum, we see a man with a sign. The sign is about the rules. "Please read the sign," the man says. "Follow the rules, and everyone can be safe in this place." What can we do here? We can see many cute dinosaur rocks and a big mummy. We can take photos. But we have rules. "Please be quiet. Do not talk or fight," the sign says. A boy is running. "Be careful," I say. "Do not run. Please wait." Another guy is playing music. "Turn off the video music, please," the man says. After the museum, we wash our hands. We are having a great weekend.`
       },
 
       // 7A - Category 3: Animals & Dates
@@ -387,14 +311,7 @@
         wordCount: 158,
         extraVocab: "always (adv.), forest (n.), leave (v.), river (n.), trash (n.), travel (v.; n.), trip (n.)",
         audioUrl: "",
-        content: `Today is my birthday. What date is it? It is November the fourth. My family and I are on a trip. We are in a big forest. When do we travel? We always travel in November. There is a big river in the forest. There are many animals around it. There is a herd of elephants. There are also monkeys, foxes, and bears. This is my first time here. I have an apple in my bag. I want to give the apple to a monkey. But my dad says no. We never give our food to animals. Our food is not healthy for them. The forest is their home. We do not leave trash in the forest. We put it in our bags. It is important to have a clean forest for the animals. On the second day, we walk in the forest. On the third day, we go home. I am very thankful for this lucky trip.`,
-        questions: [
-          { q: "(1) What is the main idea of the reading?", options: ["(A) A student's trip to a forest.", "(B) A party for a monkey.", "(C) A dinner with animals.", "(D) A bad day in a river."], ans: "(A)" },
-          { q: "(2) What animal does the writer want to give an apple to?", options: ["(A) An elephant.", "(B) A monkey.", "(C) A bear.", "(D) A fox."], ans: "(B)" },
-          { q: "(3) Why does the dad say no to the writer?", options: ["(A) The apple is for the dad.", "(B) The writer does not have apples.", "(C) Human food is bad for animals.", "(D) Monkeys do not like apples."], ans: "(C)" },
-          { q: "(4) What does 'trash' mean in the reading?", options: ["(A) A big river in the forest.", "(B) Healthy food for animals.", "(C) Things we do not want.", "(D) A heavy bag for long trips."], ans: "(C)" },
-          { q: "(5) How does the writer feel about the trip?", options: ["(A) Happy.", "(B) Sad.", "(C) Angry.", "(D) Nervous."], ans: "(A)" }
-        ]
+        content: `Today is my birthday. What date is it? It is November the fourth. My family and I are on a trip. We are in a big forest. When do we travel? We always travel in November. There is a big river in the forest. There are many animals around it. There is a herd of elephants. There are also monkeys, foxes, and bears. This is my first time here. I have an apple in my bag. I want to give the apple to a monkey. But my dad says no. We never give our food to animals. Our food is not healthy for them. The forest is their home. We do not leave trash in the forest. We put it in our bags. It is important to have a clean forest for the animals. On the second day, we walk in the forest. On the third day, we go home. I am very thankful for this lucky trip.`
       },
       {
         id: "art-11",
@@ -405,14 +322,7 @@
         wordCount: 150,
         extraVocab: "love (v.; n.), then (adv.)",
         audioUrl: "",
-        content: `What date is it today? It is October fourth. It is an important date. It is a special day for animals. When is your favorite holiday? This is my favorite day. Today, I am at a big animal home. There are many animals here. First, I see a herd of elephants. There is a big elephant. There is a small elephant. They eat healthy food. Second, there are tigers and lions. They are beautiful. Third, I see a monkey and a fox. They play around a big tree. Fourth, there is a brown bear. It sleeps on its back. We help the animals. We clean the animal home. We give them food. The animals are lucky. I am thankful, too. Next month is November. When is Thanksgiving? It is in the fourth week of November. People eat turkey dinner then. But today, we only love the animals in the world!`,
-        questions: [
-          { q: "(1) What is the story about?", options: ["(A) A brown bear and its healthy food.", "(B) A big dinner for Thanksgiving.", "(C) A beautiful tree in a big home.", "(D) Helping animals on a special day."], ans: "(D)" },
-          { q: "(2) What animals does the writer see third?", options: ["(A) A big elephant and a small elephant.", "(B) Tigers and lions.", "(C) A brown bear.", "(D) A monkey and a fox."], ans: "(D)" },
-          { q: "(3) What do we know about the writer from the story?", options: ["(A) The writer is very good to animals.", "(B) The writer wants to sleep like a bear.", "(C) The writer does not like turkeys.", "(D) The writer only visits the home in November."], ans: "(A)" },
-          { q: "(4) What does the word 'herd' mean in the story?", options: ["(A) A special dinner.", "(B) A large tree.", "(C) A group of animals.", "(D) A healthy food."], ans: "(C)" },
-          { q: "(5) How does the writer feel about October fourth?", options: ["(A) The writer likes this day very much.", "(B) The writer is nervous about the date.", "(C) The writer feels sad for the animals.", "(D) The writer is angry at the animal home."], ans: "(A)" }
-        ]
+        content: `What date is it today? It is October fourth. It is an important date. It is a special day for animals. When is your favorite holiday? This is my favorite day. Today, I am at a big animal home. There are many animals here. First, I see a herd of elephants. There is a big elephant. There is a small elephant. They eat healthy food. Second, there are tigers and lions. They are beautiful. Third, I see a monkey and a fox. They play around a big tree. Fourth, there is a brown bear. It sleeps on its back. We help the animals. We clean the animal home. We give them food. The animals are lucky. I am thankful, too. Next month is November. When is Thanksgiving? It is in the fourth week of November. People eat turkey dinner then. But today, we only love the animals in the world!`
       },
       {
         id: "art-12",
@@ -423,14 +333,7 @@
         wordCount: 126,
         extraVocab: "break (v.), make (v.), noon (n.), water (n.), work (n.; v.)",
         audioUrl: "",
-        content: `I am a student. I help at an animal park. What date is it today? It is November fourth. It is an important date. There are many animals here. My work is about animals. First, I clean the park. There is a herd of zebras. I clean their home. Second, I give food to the animals. There are lions, tigers, and bears. They want food. Third, I look at the animals. Are they healthy? Yes, they are. When is my break? It is at noon. I eat my food. Next, I go back to work. There is an elephant. I give water to the elephant. I also help on holidays. I work around Christmas and Thanksgiving. I am thankful for the animals. They make me happy.`,
-        questions: [
-          { q: "(1) What is the story about?", options: ["(A) A student's healthy lunch.", "(B) A student's favorite holiday.", "(C) A student's new pet dog.", "(D) A student's work with animals."], ans: "(D)" },
-          { q: "(2) What does the student do second?", options: ["(A) Clean the zebras' home.", "(B) Give food to the animals.", "(C) Look at the elephant.", "(D) Eat food at noon."], ans: "(B)" },
-          { q: "(3) Why does the student work on Thanksgiving?", options: ["(A) The animals need care every day.", "(B) The student needs money for food.", "(C) The park only opens on holidays.", "(D) The lions want to eat turkey."], ans: "(A)" },
-          { q: "(4) What does 'healthy' mean in the story?", options: ["(A) Not sick.", "(B) Very hungry.", "(C) Very angry.", "(D) Not clean."], ans: "(A)" },
-          { q: "(5) How does the writer tell us about the work?", options: ["(A) By asking many questions.", "(B) By naming all the animals in the world.", "(C) By talking about different holidays.", "(D) By giving the steps in order."], ans: "(D)" }
-        ]
+        content: `I am a student. I help at an animal park. What date is it today? It is November fourth. It is an important date. There are many animals here. My work is about animals. First, I clean the park. There is a herd of zebras. I clean their home. Second, I give food to the animals. There are lions, tigers, and bears. They want food. Third, I look at the animals. Are they healthy? Yes, they are. When is my break? It is at noon. I eat my food. Next, I go back to work. There is an elephant. I give water to the elephant. I also help on holidays. I work around Christmas and Thanksgiving. I am thankful for the animals. They make me happy.`
       },
       {
         id: "art-13",
@@ -441,26 +344,17 @@
         wordCount: 193,
         extraVocab: "choice (n.), hill (n.), sun (n.), thing (n.)",
         audioUrl: "",
-        content: `I am a junior high school student. Today is an important date. What date is it? It is November fourth. It is our Animal Holiday. When is Thanksgiving? It is also in this month, but our holiday is before Thanksgiving. There are animals in the world. There is a herd of cows. There are horses and turkeys. There are lions, elephants, tigers, zebras, monkeys, foxes, and bears. We think about them. How about the bugs? We help them, too. We give healthy food to them. We never eat a turkey leg for dinner today. The turkeys are lucky. They are not nervous, and they do not cry. We walk around the park. We clean the park. We walk up the hill. We are out in the sun. We have only one Earth. We wash the horse's back. It is the right thing to do. A second holiday is Christmas in December. The third is New Year's Eve. My birthday is in January. The next holidays are in February, March, April, May, June, July, August, September, and October. But the Animal Holiday is my first choice. I am thankful for the animals.`,
-        questions: [
-          { q: "(1) What is the reading about?", options: ["(A) A special holiday for animals.", "(B) A student's birthday party.", "(C) A big Thanksgiving dinner.", "(D) A new zoo in the city."], ans: "(A)" },
-          { q: "(2) When is the Animal Holiday?", options: ["(A) It is on November fourth.", "(B) It is in December.", "(C) It is on New Year's Eve.", "(D) It is in January."], ans: "(A)" },
-          { q: "(3) Why are the turkeys 'lucky' on this holiday?", options: ["(A) They can fly up the hill.", "(B) They get a lot of new friends.", "(C) People do not eat them for dinner.", "(D) People give them a warm home."], ans: "(C)" },
-          { q: "(4) What does 'herd' mean in the reading?", options: ["(A) A kind of healthy food.", "(B) A group of animals.", "(C) A fun game in the park.", "(D) A clean place for bugs."], ans: "(B)" },
-          { q: "(5) How does the student feel about the Animal Holiday?", options: ["(A) He loves it the most.", "(B) He thinks it is a bad day.", "(C) He feels nervous about it.", "(D) He is sad for the animals."], ans: "(A)" }
-        ]
+        content: `I am a junior high school student. Today is an important date. What date is it? It is November fourth. It is our Animal Holiday. When is Thanksgiving? It is also in this month, but our holiday is before Thanksgiving. There are animals in the world. There is a herd of cows. There are horses and turkeys. There are lions, elephants, tigers, zebras, monkeys, foxes, and bears. We think about them. How about the bugs? We help them, too. We give healthy food to them. We never eat a turkey leg for dinner today. The turkeys are lucky. They are not nervous, and they do not cry. We walk around the park. We clean the park. We walk up the hill. We are out in the sun. We have only one Earth. We wash the horse's back. It is the right thing to do. A second holiday is Christmas in December. The third is New Year's Eve. My birthday is in January. The next holidays are in February, March, April, May, June, July, August, September, and October. But the Animal Holiday is my first choice. I am thankful for the animals.`
       }
     ];
 
-    // Current State
     let currentGrade = "7A";
     let currentCategory = "family";
     let searchQuery = "";
 
-    // Audio Manager (TTS & Audio Element)
     const audioState = {
       activeId: null,
-      mode: 'tts', // 'tts' or 'file'
+      mode: 'tts',
       isPlaying: false,
       isPaused: false,
       rate: 1.0,
@@ -470,14 +364,12 @@
       audioElement: null
     };
 
-    // Initialize Web App
     window.addEventListener("DOMContentLoaded", () => {
       renderGradeTabs();
       renderCategoryTabs();
       renderArticles();
     });
 
-    // Render Grade Tabs (Level 1)
     function renderGradeTabs() {
       const container = document.getElementById("gradeTabsContainer");
       container.innerHTML = GRADES.map(g => {
@@ -497,7 +389,6 @@
       }).join('');
     }
 
-    // Switch Grade
     function switchGrade(gradeId) {
       if (currentGrade === gradeId) return;
       stopAudio();
@@ -509,7 +400,6 @@
       renderArticles();
     }
 
-    // Render Category Tabs (Level 2)
     function renderCategoryTabs() {
       const container = document.getElementById("categoryTabsContainer");
       const cats = CATEGORIES[currentGrade] || [];
@@ -537,7 +427,6 @@
       }).join('');
     }
 
-    // Switch Category
     function switchCategory(catId) {
       if (currentCategory === catId) return;
       stopAudio();
@@ -546,13 +435,11 @@
       renderArticles();
     }
 
-    // Handle Search
     function handleSearch(val) {
       searchQuery = val.trim().toLowerCase();
       renderArticles();
     }
 
-    // Filter and Display Articles
     function renderArticles() {
       const grid = document.getElementById("articlesGrid");
       const emptyState = document.getElementById("emptyState");
@@ -585,12 +472,10 @@
       grid.innerHTML = filtered.map(renderArticleCard).join('');
     }
 
-    // Split text into readable sentences
     function splitIntoSentences(text) {
       return text.match(/[^.!?]+[.!?]+(\s|$)|[^.!?]+$/g) || [text];
     }
 
-    // Render Single Article Card
     function renderArticleCard(article) {
       const sentences = splitIntoSentences(article.content);
       const formattedContent = sentences.map((s, idx) => 
@@ -599,7 +484,6 @@
 
       return `
         <article class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden hover:shadow-md transition-shadow">
-          <!-- Card Header -->
           <div class="p-5 border-b border-slate-100 bg-slate-50/60 flex flex-col md:flex-row md:items-center justify-between gap-3">
             <div>
               <div class="flex items-center gap-2 mb-1">
@@ -616,7 +500,6 @@
 
             <!-- Audio Player Bar -->
             <div class="flex items-center flex-wrap gap-2 bg-white p-2 rounded-xl border border-slate-200 shadow-sm" id="player-${article.id}">
-              <!-- Visual Waveform (Hidden by default) -->
               <div id="wave-${article.id}" class="hidden items-center px-1">
                 <div class="wave-bar"></div>
                 <div class="wave-bar"></div>
@@ -625,7 +508,6 @@
                 <div class="wave-bar"></div>
               </div>
 
-              <!-- Play/Pause Button -->
               <button 
                 onclick="togglePlay('${article.id}')" 
                 id="btn-play-${article.id}"
@@ -635,7 +517,6 @@
                 <i class="fa-solid fa-play"></i>
               </button>
 
-              <!-- Stop Button -->
               <button 
                 onclick="stopAudio()" 
                 class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 transition text-xs"
@@ -644,17 +525,15 @@
                 <i class="fa-solid fa-stop"></i>
               </button>
 
-              <!-- Speed Selector -->
               <select 
                 onchange="setAudioSpeed('${article.id}', this.value)" 
                 class="text-xs border border-slate-200 rounded-lg px-2 py-1 bg-slate-50 text-slate-700 focus:outline-none"
               >
-                <option value="0.75">0.75x (Slow)</option>
-                <option value="1.0" selected>1.0x (Normal)</option>
-                <option value="1.25">1.25x (Fast)</option>
+                <option value="0.75">0.75x</option>
+                <option value="1.0" selected>1.0x</option>
+                <option value="1.25">1.25x</option>
               </select>
 
-              <!-- Mode Selection (TTS or Upload) -->
               <div class="flex items-center border-l border-slate-200 pl-2 gap-1.5">
                 <span class="text-[11px] text-slate-400 font-medium hidden sm:inline">Audio:</span>
                 <select 
@@ -662,11 +541,10 @@
                   onchange="switchAudioMode('${article.id}', this.value)" 
                   class="text-xs border border-slate-200 rounded-lg px-2 py-1 bg-slate-50 text-slate-700 focus:outline-none"
                 >
-                  <option value="tts">AI Reader (TTS)</option>
+                  <option value="tts">AI TTS</option>
                   <option value="custom" ${article.audioUrl ? 'selected' : ''}>Recorded Audio</option>
                 </select>
 
-                <!-- Hidden Local Audio File Input -->
                 <input 
                   type="file" 
                   id="file-input-${article.id}" 
@@ -686,7 +564,6 @@
             </div>
           </div>
 
-          <!-- Extra Vocabulary Banner -->
           ${article.extraVocab && article.extraVocab !== 'None' ? `
             <div class="bg-amber-50/70 px-5 py-2 border-b border-amber-100/60 flex items-center text-xs text-amber-900 gap-2">
               <i class="fa-solid fa-lightbulb text-amber-600"></i>
@@ -695,48 +572,15 @@
             </div>
           ` : ''}
 
-          <!-- Article Content -->
           <div class="p-6">
             <div id="content-${article.id}" class="text-slate-800 text-base md:text-lg leading-relaxed font-serif tracking-normal">
               ${formattedContent}
             </div>
           </div>
-
-          <!-- Questions Collapsible Accordion -->
-          ${article.questions && article.questions.length > 0 ? `
-            <div class="border-t border-slate-100 bg-slate-50/50 p-5">
-              <details class="group">
-                <summary class="flex justify-between items-center font-bold text-sm text-slate-700 cursor-pointer list-none select-none">
-                  <span class="flex items-center gap-2">
-                    <i class="fa-regular fa-circle-question text-indigo-600"></i>
-                    Comprehension Questions & Key (${article.questions.length} items)
-                  </span>
-                  <span class="text-indigo-600 text-xs group-open:rotate-180 transition-transform duration-200">
-                    <i class="fa-solid fa-chevron-down"></i>
-                  </span>
-                </summary>
-                
-                <div class="mt-4 space-y-4 pt-2 border-t border-slate-200/60 text-sm">
-                  ${article.questions.map((q, qIndex) => `
-                    <div class="bg-white p-3.5 rounded-lg border border-slate-200">
-                      <p class="font-semibold text-slate-800 mb-2">${q.q}</p>
-                      <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-slate-600 text-xs mb-2">
-                        ${q.options.map(opt => `<div>${opt}</div>`).join('')}
-                      </div>
-                      <div class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded inline-block">
-                        Answer: ${q.ans}
-                      </div>
-                    </div>
-                  `).join('')}
-                </div>
-              </details>
-            </div>
-          ` : ''}
         </article>
       `;
     }
 
-    // Audio Control: Toggle Play/Pause
     function togglePlay(articleId) {
       const article = articlesData.find(a => a.id === articleId);
       if (!article) return;
@@ -744,7 +588,6 @@
       const modeSelect = document.getElementById(`mode-select-${articleId}`);
       const mode = modeSelect ? modeSelect.value : 'tts';
 
-      // If switching to a different article
       if (audioState.activeId && audioState.activeId !== articleId) {
         stopAudio();
       }
@@ -759,14 +602,12 @@
       }
     }
 
-    // TTS Web Speech API Playback Handler
     function handleTTSPlayback(article) {
       if (!('speechSynthesis' in window)) {
         alert("Your browser does not support Web Speech API synthesis.");
         return;
       }
 
-      // If paused, resume
       if (audioState.isPlaying && audioState.isPaused) {
         window.speechSynthesis.resume();
         audioState.isPaused = false;
@@ -774,7 +615,6 @@
         return;
       }
 
-      // If playing, pause
       if (audioState.isPlaying && !audioState.isPaused) {
         window.speechSynthesis.pause();
         audioState.isPaused = true;
@@ -782,7 +622,6 @@
         return;
       }
 
-      // Start new TTS playback
       window.speechSynthesis.cancel();
       clearHighlights(article.id);
 
@@ -794,7 +633,6 @@
       playNextSentence(article.id);
     }
 
-    // Play next sentence with highlight tracking
     function playNextSentence(articleId) {
       if (!audioState.isPlaying || audioState.currentSentenceIdx >= audioState.sentences.length) {
         stopAudio();
@@ -804,7 +642,6 @@
       const idx = audioState.currentSentenceIdx;
       const sentenceText = audioState.sentences[idx];
 
-      // Highlight current sentence
       clearHighlights(articleId);
       const spanEl = document.getElementById(`s-${articleId}-${idx}`);
       if (spanEl) {
@@ -831,7 +668,6 @@
       window.speechSynthesis.speak(utterance);
     }
 
-    // Custom Recorded Audio File Playback
     function handleCustomAudioPlayback(article) {
       if (!article.audioUrl) {
         alert("Please upload an MP3 audio file or provide a valid audio URL first.");
@@ -865,7 +701,6 @@
       }
     }
 
-    // Stop and Reset Audio State
     function stopAudio() {
       if ('speechSynthesis' in window) {
         window.speechSynthesis.cancel();
@@ -885,20 +720,17 @@
       audioState.currentSentenceIdx = 0;
     }
 
-    // Set Audio Speed Rate
     function setAudioSpeed(articleId, speedVal) {
       audioState.rate = parseFloat(speedVal);
       if (audioState.audioElement) {
         audioState.audioElement.playbackRate = audioState.rate;
       }
-      // If currently playing TTS, restart current sentence with new rate
       if (audioState.isPlaying && audioState.mode === 'tts' && !audioState.isPaused) {
         window.speechSynthesis.cancel();
         playNextSentence(articleId);
       }
     }
 
-    // Switch between TTS and Custom Audio
     function switchAudioMode(articleId, mode) {
       const uploadBtn = document.getElementById(`upload-btn-${articleId}`);
       if (mode === 'custom') {
@@ -911,7 +743,6 @@
       }
     }
 
-    // Handle Local Audio Upload via File Input
     function handleLocalAudioUpload(articleId, event) {
       const file = event.target.files[0];
       if (!file) return;
@@ -924,7 +755,6 @@
       }
     }
 
-    // Clear Highlight Spans
     function clearHighlights(articleId) {
       const container = document.getElementById(`content-${articleId}`);
       if (container) {
@@ -933,7 +763,6 @@
       }
     }
 
-    // Update Player Bar UI
     function updatePlayerUI(articleId, isPlaying, isPaused = false) {
       const playBtn = document.getElementById(`btn-play-${articleId}`);
       const wave = document.getElementById(`wave-${articleId}`);
@@ -958,7 +787,6 @@
       }
     }
 
-    // Modal Control
     function openAddModal() {
       document.getElementById("modalGradeSelect").value = currentGrade;
       document.getElementById("modalCategorySelect").value = currentCategory || "family";
@@ -970,7 +798,6 @@
       document.getElementById("newArticleForm").reset();
     }
 
-    // Save New Article
     function saveArticle(e) {
       e.preventDefault();
       const grade = document.getElementById("modalGradeSelect").value;
@@ -991,14 +818,12 @@
         wordCount: words,
         extraVocab: extraVocab,
         audioUrl: audioUrl,
-        content: content,
-        questions: []
+        content: content
       };
 
       articlesData.unshift(newArticle);
       closeAddModal();
 
-      // Switch to targeted tab
       currentGrade = grade;
       currentCategory = cat;
       renderGradeTabs();
